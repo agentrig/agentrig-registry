@@ -1,0 +1,18 @@
+name: release-registry
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*.*.*'
+jobs:
+  validate-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Validate registry
+        run: node scripts/validate-registry.mjs
+      - name: Registry bootstrap ready
+        run: echo "Registry validated and ready for release"
