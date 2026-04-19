@@ -1,0 +1,33 @@
+{
+  "$schema": "https://agentrig.ai/schema/agentrig-lock.json",
+  "capability_set": [],
+  "declared_network_domains": [],
+  "declared_secrets": [],
+  "dependencies": [],
+  "file_digests": [
+    {
+      "digest": "sha256:0b84976afadaa9ea23c9188f6cb0a6a6eeeaa7530d8676990a9fa8b4b75ef177",
+      "path": ".plugin/plugin.json"
+    },
+    {
+      "digest": "sha256:adc37366f403835c1470ab2df93d3837d4719372fc1ef8593d922e06f033f8b2",
+      "path": "LICENSE"
+    },
+    {
+      "digest": "sha256:fa6d86fd4ccf9fdefb6b9a5235263197fb69526d542231e8bfc8e6acaea90089",
+      "path": "README.md"
+    },
+    {
+      "digest": "sha256:36ce8e6c647490ffe9882f4fb4af72cd19d6149d1639007ddef55af3a4be45f5",
+      "path": "skills/rust/rust-check.sh"
+    },
+    {
+      "digest": "sha256:ef38260e2405326f744139b98c83d49ef46532418eb119c8521aeab55f16c69f",
+      "path": "skills/rust/SKILL.md"
+    }
+  ],
+  "plugin": "community.rust",
+  "runtime_requirements": [],
+  "snapshot_digest": "sha256:05cc5abae3d467f81541c77212be4d319503219f4b25750f39b5c51df0b51e46",
+  "version": "0.1.0"
+}

@@ -1,0 +1,10 @@
+{
+  "$schema": "https://agentrig.ai/schema/agentrig-source.json",
+  "plugin_path": "plugin",
+  "snapshot_created_at": "2026-04-14T14:10:00Z",
+  "snapshot_tree_digest": "sha256:d9d996b5b3946679a091a4c1928b284c89986474dadc85bfb3658ae54e34433f",
+  "submitted_by": "community-submit@agentrig.ai",
+  "upstream_commit": "4444444444444444444444444444444444444444",
+  "upstream_repo": "https://github.com/community-agents/go-skill",
+  "upstream_tag": "v0.1.0"
+}

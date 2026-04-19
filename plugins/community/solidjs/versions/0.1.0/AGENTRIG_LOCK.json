@@ -1,0 +1,29 @@
+{
+  "$schema": "https://agentrig.ai/schema/agentrig-lock.json",
+  "capability_set": [],
+  "declared_network_domains": [],
+  "declared_secrets": [],
+  "dependencies": [],
+  "file_digests": [
+    {
+      "digest": "sha256:ad0220011034fffadc7b205431468f81f3cb08a5e96c43a0a0cde3af4669a6ea",
+      "path": ".plugin/plugin.json"
+    },
+    {
+      "digest": "sha256:adc37366f403835c1470ab2df93d3837d4719372fc1ef8593d922e06f033f8b2",
+      "path": "LICENSE"
+    },
+    {
+      "digest": "sha256:3df31cb80a915de9895abe4a0c9736917755ee86d01ca5054fcd3cbd99d280b4",
+      "path": "README.md"
+    },
+    {
+      "digest": "sha256:5c4053bc43bd3098c7558aa9a2b9be48b841441e99d7461c04227dc07d46b3be",
+      "path": "skills/solidjs/SKILL.md"
+    }
+  ],
+  "plugin": "community.solidjs",
+  "runtime_requirements": [],
+  "snapshot_digest": "sha256:5e9038c20c1bc162a02b01b20659e1f25f01e6a7ff44aad8f3b94794e9bc4045",
+  "version": "0.1.0"
+}

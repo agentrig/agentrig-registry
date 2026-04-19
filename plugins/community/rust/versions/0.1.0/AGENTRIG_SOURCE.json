@@ -1,0 +1,10 @@
+{
+  "$schema": "https://agentrig.ai/schema/agentrig-source.json",
+  "plugin_path": "plugin",
+  "snapshot_created_at": "2026-04-13T12:45:00Z",
+  "snapshot_tree_digest": "sha256:05cc5abae3d467f81541c77212be4d319503219f4b25750f39b5c51df0b51e46",
+  "submitted_by": "security-review@agentrig.ai",
+  "upstream_commit": "5555555555555555555555555555555555555555",
+  "upstream_repo": "https://github.com/community-agents/rust-skill",
+  "upstream_tag": "v0.1.0"
+}

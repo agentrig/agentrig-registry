@@ -12,7 +12,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Validate registry
-        run: node scripts/validate-registry.mjs
-      - name: Registry bootstrap ready
-        run: echo "Registry validated and ready for release"
+      - name: Verify canonical registry contract
+        run: node scripts/validate-registry.mjs --check
+      - name: Verify deterministic sync
+        run: node scripts/validate-registry.mjs --write && git diff --exit-code
+      - name: Registry release ready
+        run: echo "Registry validated, signed envelope verified, and release snapshot is deterministic"

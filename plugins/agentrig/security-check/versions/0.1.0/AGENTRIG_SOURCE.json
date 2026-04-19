@@ -1,0 +1,10 @@
+{
+  "$schema": "https://agentrig.ai/schema/agentrig-source.json",
+  "plugin_path": "plugin",
+  "snapshot_created_at": "2026-04-16T10:15:00Z",
+  "snapshot_tree_digest": "sha256:0b255d74b8b5cabf6d522c28fef43055909517b9f6851f361a8a889bc5eb6cc7",
+  "submitted_by": "security-review@agentrig.ai",
+  "upstream_commit": "2222222222222222222222222222222222222222",
+  "upstream_repo": "https://github.com/agentrig/security-check",
+  "upstream_tag": "v0.1.0"
+}

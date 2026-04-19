@@ -1,0 +1,10 @@
+{
+  "$schema": "https://agentrig.ai/schema/agentrig-source.json",
+  "plugin_path": "plugin",
+  "snapshot_created_at": "2026-04-12T10:05:00Z",
+  "snapshot_tree_digest": "sha256:5e9038c20c1bc162a02b01b20659e1f25f01e6a7ff44aad8f3b94794e9bc4045",
+  "submitted_by": "community-review@agentrig.ai",
+  "upstream_commit": "6666666666666666666666666666666666666666",
+  "upstream_repo": "https://github.com/community-agents/solidjs-skill",
+  "upstream_tag": "v0.1.0"
+}

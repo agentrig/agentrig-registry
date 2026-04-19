@@ -1,0 +1,29 @@
+{
+  "$schema": "https://agentrig.ai/schema/agentrig-lock.json",
+  "capability_set": [],
+  "declared_network_domains": [],
+  "declared_secrets": [],
+  "dependencies": [],
+  "file_digests": [
+    {
+      "digest": "sha256:e2421a7331acd1bff64728981d5a2652d36e342290e4e1f1aad8f1a7b79c2d0e",
+      "path": ".plugin/plugin.json"
+    },
+    {
+      "digest": "sha256:adc37366f403835c1470ab2df93d3837d4719372fc1ef8593d922e06f033f8b2",
+      "path": "LICENSE"
+    },
+    {
+      "digest": "sha256:05f880a7f656c3b61c2d747928bf131cebe961a17fbe8256d1b5d1d4f456dfa4",
+      "path": "README.md"
+    },
+    {
+      "digest": "sha256:cd21572f835cfeba021d7980953c1dc5f62ada5ebaadef78937864fc76e9399d",
+      "path": "skills/typescript/SKILL.md"
+    }
+  ],
+  "plugin": "community.typescript",
+  "runtime_requirements": [],
+  "snapshot_digest": "sha256:7f352bdee27e05aabbd2907814335d8fadb22af7d2aff38a42a7f1cfca2b18dd",
+  "version": "0.1.0"
+}

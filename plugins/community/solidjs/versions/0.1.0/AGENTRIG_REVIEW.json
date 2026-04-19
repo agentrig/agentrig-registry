@@ -1,0 +1,21 @@
+{
+  "$schema": "https://agentrig.ai/schema/agentrig-review.json",
+  "review_status": "yanked",
+  "reviewer": "AgentRig Community Review Team",
+  "reviewed_at": "2026-04-12T11:20:00Z",
+  "scanner_summary": {
+    "status": "warn",
+    "findings": [
+      "Version retained only for history after yanking."
+    ]
+  },
+  "policy_decisions": [
+    "Do not allow new installs.",
+    "Keep historical metadata and advisory visibility."
+  ],
+  "trust_tier_basis": {
+    "trust_tier": "yanked",
+    "installability": "yanked",
+    "rationale": "Yanked from new installs while remaining visible for historical and advisory purposes."
+  }
+}

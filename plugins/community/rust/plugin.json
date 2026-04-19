@@ -1,0 +1,42 @@
+{
+  "$schema": "https://agentrig.ai/schema/plugin-history.json",
+  "active_version": {
+    "installability": "blocked",
+    "lock": "plugins/community/rust/versions/0.1.0/AGENTRIG_LOCK.json",
+    "manifest": "plugins/community/rust/versions/0.1.0/.plugin/plugin.json",
+    "path": "plugins/community/rust/versions/0.1.0/",
+    "published_at": "2026-04-13T13:30:00Z",
+    "review": "plugins/community/rust/versions/0.1.0/AGENTRIG_REVIEW.json",
+    "snapshot_digest": "sha256:05cc5abae3d467f81541c77212be4d319503219f4b25750f39b5c51df0b51e46",
+    "source": "plugins/community/rust/versions/0.1.0/AGENTRIG_SOURCE.json",
+    "trust_tier": "blocked",
+    "version": "0.1.0"
+  },
+  "advisories": [
+    "ADV-2026-0001"
+  ],
+  "description": "Rust quality checks: fmt, clippy, tests.",
+  "installability": "blocked",
+  "keywords": [
+    "rust"
+  ],
+  "latest_version": "0.1.0",
+  "name": "Rust skill",
+  "namespace": "community",
+  "plugin": "community.rust",
+  "trust_tier": "blocked",
+  "versions": [
+    {
+      "installability": "blocked",
+      "lock": "plugins/community/rust/versions/0.1.0/AGENTRIG_LOCK.json",
+      "manifest": "plugins/community/rust/versions/0.1.0/.plugin/plugin.json",
+      "path": "plugins/community/rust/versions/0.1.0/",
+      "published_at": "2026-04-13T13:30:00Z",
+      "review": "plugins/community/rust/versions/0.1.0/AGENTRIG_REVIEW.json",
+      "snapshot_digest": "sha256:05cc5abae3d467f81541c77212be4d319503219f4b25750f39b5c51df0b51e46",
+      "source": "plugins/community/rust/versions/0.1.0/AGENTRIG_SOURCE.json",
+      "trust_tier": "blocked",
+      "version": "0.1.0"
+    }
+  ]
+}

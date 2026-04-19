@@ -1,0 +1,33 @@
+{
+  "$schema": "https://agentrig.ai/schema/agentrig-lock.json",
+  "capability_set": [],
+  "declared_network_domains": [],
+  "declared_secrets": [],
+  "dependencies": [],
+  "file_digests": [
+    {
+      "digest": "sha256:6c18539edfbf9371b8f5aefa793e8f901a77ed421ec697f13ed053f2aa8777c0",
+      "path": ".plugin/plugin.json"
+    },
+    {
+      "digest": "sha256:adc37366f403835c1470ab2df93d3837d4719372fc1ef8593d922e06f033f8b2",
+      "path": "LICENSE"
+    },
+    {
+      "digest": "sha256:86e7523e3744ab218b703572744a35ac3144e89c211ca558640d94abd0b1137d",
+      "path": "README.md"
+    },
+    {
+      "digest": "sha256:c514829f40877baf8a74a91bd09726026ca5cc91a48b0116e01519c721036070",
+      "path": "skills/go/go-check.sh"
+    },
+    {
+      "digest": "sha256:e103fb4cf7294d0dfbcb9b10ab7c7557d8bb074c46fa5499384cc5cc7544c018",
+      "path": "skills/go/SKILL.md"
+    }
+  ],
+  "plugin": "community.go",
+  "runtime_requirements": [],
+  "snapshot_digest": "sha256:d9d996b5b3946679a091a4c1928b284c89986474dadc85bfb3658ae54e34433f",
+  "version": "0.1.0"
+}

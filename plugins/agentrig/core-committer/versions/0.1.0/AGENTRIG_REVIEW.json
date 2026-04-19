@@ -1,0 +1,19 @@
+{
+  "$schema": "https://agentrig.ai/schema/agentrig-review.json",
+  "review_status": "approved",
+  "reviewer": "AgentRig Core Review Team",
+  "reviewed_at": "2026-04-16T10:00:00Z",
+  "scanner_summary": {
+    "status": "pass",
+    "findings": []
+  },
+  "policy_decisions": [
+    "Official AgentRig maintained plugin.",
+    "Eligible for installability in the public registry."
+  ],
+  "trust_tier_basis": {
+    "trust_tier": "official",
+    "installability": "installable",
+    "rationale": "Owned and maintained by the AgentRig team."
+  }
+}

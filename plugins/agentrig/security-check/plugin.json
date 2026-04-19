@@ -1,0 +1,41 @@
+{
+  "$schema": "https://agentrig.ai/schema/plugin-history.json",
+  "active_version": {
+    "installability": "installable",
+    "lock": "plugins/agentrig/security-check/versions/0.1.0/AGENTRIG_LOCK.json",
+    "manifest": "plugins/agentrig/security-check/versions/0.1.0/.plugin/plugin.json",
+    "path": "plugins/agentrig/security-check/versions/0.1.0/",
+    "published_at": "2026-04-16T11:00:00Z",
+    "review": "plugins/agentrig/security-check/versions/0.1.0/AGENTRIG_REVIEW.json",
+    "snapshot_digest": "sha256:0b255d74b8b5cabf6d522c28fef43055909517b9f6851f361a8a889bc5eb6cc7",
+    "source": "plugins/agentrig/security-check/versions/0.1.0/AGENTRIG_SOURCE.json",
+    "trust_tier": "official",
+    "version": "0.1.0"
+  },
+  "description": "Adds a security check skill that runs lightweight checks before shipping.",
+  "installability": "installable",
+  "keywords": [
+    "security",
+    "workflow",
+    "core"
+  ],
+  "latest_version": "0.1.0",
+  "name": "Security check skill",
+  "namespace": "agentrig",
+  "plugin": "agentrig.security-check",
+  "trust_tier": "official",
+  "versions": [
+    {
+      "installability": "installable",
+      "lock": "plugins/agentrig/security-check/versions/0.1.0/AGENTRIG_LOCK.json",
+      "manifest": "plugins/agentrig/security-check/versions/0.1.0/.plugin/plugin.json",
+      "path": "plugins/agentrig/security-check/versions/0.1.0/",
+      "published_at": "2026-04-16T11:00:00Z",
+      "review": "plugins/agentrig/security-check/versions/0.1.0/AGENTRIG_REVIEW.json",
+      "snapshot_digest": "sha256:0b255d74b8b5cabf6d522c28fef43055909517b9f6851f361a8a889bc5eb6cc7",
+      "source": "plugins/agentrig/security-check/versions/0.1.0/AGENTRIG_SOURCE.json",
+      "trust_tier": "official",
+      "version": "0.1.0"
+    }
+  ]
+}
