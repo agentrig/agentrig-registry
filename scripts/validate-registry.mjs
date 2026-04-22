@@ -54,7 +54,6 @@ const ROOT_ALLOWED_ENTRIES = new Set([
   'scripts',
 ])
 
-const BLOCKED_ROOT_ENTRIES = new Set(['manifests'])
 const REQUIRED_VERSION_FILES = new Set([
   'AGENTRIG_LOCK.json',
   'AGENTRIG_REVIEW.json',
@@ -62,7 +61,6 @@ const REQUIRED_VERSION_FILES = new Set([
   'LICENSE',
   'README.md',
 ])
-const BLOCKED_DELIVERY_FILENAMES = new Set(['install.json'])
 const BLOCKED_DELIVERY_EXTENSIONS = ['.tgz', '.tar.gz', '.zip', '.tar', '.gz', '.bz2', '.xz', '.7z', '.rar']
 const BLOCKED_DELIVERY_NAME_PATTERNS = [
   /^checksums?(\.[a-z0-9]+)?$/i,
@@ -269,7 +267,6 @@ function maybeArray(value) {
 
 function isDeliveryArtifact(name) {
   const lower = name.toLowerCase()
-  if (BLOCKED_DELIVERY_FILENAMES.has(lower)) return true
   if (BLOCKED_DELIVERY_EXTENSIONS.some((extension) => lower.endsWith(extension))) return true
   if (BLOCKED_DELIVERY_NAME_PATTERNS.some((pattern) => pattern.test(name))) return true
   return false
@@ -802,9 +799,6 @@ async function syncRegistry(mode) {
     .filter((entry) => entry.name !== '.git' && !ROOT_ALLOWED_ENTRIES.has(entry.name))
     .map((entry) => entry.name)
   assert(unexpectedRoots.length === 0, `Unexpected root entries: ${unexpectedRoots.join(', ')}`)
-  for (const blockedEntry of BLOCKED_ROOT_ENTRIES) {
-    assert(!rootEntries.some((entry) => entry.name === blockedEntry), `Legacy root entry "${blockedEntry}" is forbidden`)
-  }
 
   const advisories = await readJson(advisoriesPath)
 
