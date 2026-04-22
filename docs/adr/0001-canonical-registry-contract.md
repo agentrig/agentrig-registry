@@ -139,6 +139,9 @@ Minimum required contents:
 - `snapshot_created_at`
 - `snapshot_tree_digest`
 
+Submission input uses `upstream_commit_sha`. That value maps directly to
+`upstream_commit` in `AGENTRIG_SOURCE.json`.
+
 ### `AGENTRIG_LOCK.json`
 
 - `plugin`
@@ -162,6 +165,14 @@ Minimum required contents:
 
 ### `advisories.json`
 
+The root document contains:
+
+- `$schema`
+- `generated_at`
+- `items`
+
+Each item in `items` contains:
+
 - `id`
 - `title`
 - `published_at`
@@ -178,7 +189,7 @@ Minimum required contents:
 The following is frozen by contract:
 
 - `registry.json` must be signed
-- the signature envelope lives at `registry.json.signature`
+- the signature envelope lives inside `registry.json` at the `signature` property
 - `registry.json.signature.target` is always `registry.json`
 - `registry.json.signature.signed_digest` is computed from the canonical unsigned registry payload
 - plugin versions must be addressable by digest

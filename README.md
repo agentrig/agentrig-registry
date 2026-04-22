@@ -6,7 +6,7 @@ If a plugin version is installable, this repository is where that decision and s
 
 ## What is in this repo
 
-- `registry.json` - top-level index and signed public entrypoint
+- `registry.json` - top-level index and signed public entrypoint, including the `signature` object
 - `advisories.json` - blocked and yanked versions
 - `plugins/<namespace>/<plugin>/plugin.json` - history for one plugin
 - `plugins/<namespace>/<plugin>/versions/<version>/` - one installable snapshot
