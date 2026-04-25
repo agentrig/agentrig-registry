@@ -60,6 +60,7 @@ node scripts/validate-registry.mjs --check
 
 The registry contract is defined in:
 
+- `docs/spec.md`
 - `docs/adr/0001-canonical-registry-contract.md`
 - `schemas/registry.schema.json`
 - `schemas/plugin-history.schema.json`
