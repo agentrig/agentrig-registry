@@ -72,7 +72,7 @@ by `@agentrig/sdk`. They inherit the parent plugin's registry trust and
 installability unless and until they have their own standalone signed registry
 entry.
 
-Local partial installs are represented as AgentRig Selection Bundles. The
+Local selected-artifact installs are represented as AgentRig Selection Bundles. The
 registry records source trust; the SDK and CLI handle closure checks,
 materialization metadata, and hash-owned uninstall ledger records.
 
