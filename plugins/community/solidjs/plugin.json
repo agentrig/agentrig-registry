@@ -15,12 +15,14 @@
   "advisories": [
     "ADV-2026-0002"
   ],
+  "artifact": "community.solidjs",
   "description": "SolidJS patterns and guardrails for agentic coding.",
   "installability": "yanked",
   "keywords": [
     "solidjs",
     "frontend"
   ],
+  "kind": "plugin",
   "latest_version": "0.1.0",
   "name": "SolidJS skill",
   "namespace": "community",

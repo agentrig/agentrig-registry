@@ -16,6 +16,7 @@
         "trust_tier": "official",
         "version": "0.1.0"
       },
+      "artifact": "agentrig.core-committer",
       "description": "Adds a committer skill with a safe commit helper script.",
       "history": "plugins/agentrig/core-committer/plugin.json",
       "installability": "installable",
@@ -24,6 +25,7 @@
         "workflow",
         "core"
       ],
+      "kind": "plugin",
       "latest_version": "0.1.0",
       "name": "Committer skill",
       "plugin": "agentrig.core-committer",
@@ -42,6 +44,7 @@
         "trust_tier": "official",
         "version": "0.1.0"
       },
+      "artifact": "agentrig.security-check",
       "description": "Adds a security check skill that runs lightweight checks before shipping.",
       "history": "plugins/agentrig/security-check/plugin.json",
       "installability": "installable",
@@ -50,6 +53,7 @@
         "workflow",
         "core"
       ],
+      "kind": "plugin",
       "latest_version": "0.1.0",
       "name": "Security check skill",
       "plugin": "agentrig.security-check",
@@ -68,12 +72,14 @@
         "trust_tier": "listed",
         "version": "0.1.0"
       },
+      "artifact": "community.go",
       "description": "Go quality checks: fmt, vet, tests.",
       "history": "plugins/community/go/plugin.json",
       "installability": "discovery_only",
       "keywords": [
         "go"
       ],
+      "kind": "plugin",
       "latest_version": "0.1.0",
       "name": "Go skill",
       "plugin": "community.go",
@@ -95,12 +101,14 @@
       "advisories": [
         "ADV-2026-0001"
       ],
+      "artifact": "community.rust",
       "description": "Rust quality checks: fmt, clippy, tests.",
       "history": "plugins/community/rust/plugin.json",
       "installability": "blocked",
       "keywords": [
         "rust"
       ],
+      "kind": "plugin",
       "latest_version": "0.1.0",
       "name": "Rust skill",
       "plugin": "community.rust",
@@ -122,6 +130,7 @@
       "advisories": [
         "ADV-2026-0002"
       ],
+      "artifact": "community.solidjs",
       "description": "SolidJS patterns and guardrails for agentic coding.",
       "history": "plugins/community/solidjs/plugin.json",
       "installability": "yanked",
@@ -129,6 +138,7 @@
         "solidjs",
         "frontend"
       ],
+      "kind": "plugin",
       "latest_version": "0.1.0",
       "name": "SolidJS skill",
       "plugin": "community.solidjs",
@@ -147,12 +157,14 @@
         "trust_tier": "reviewed",
         "version": "0.1.0"
       },
+      "artifact": "community.typescript",
       "description": "TypeScript patterns and guardrails for agentic coding.",
       "history": "plugins/community/typescript/plugin.json",
       "installability": "installable",
       "keywords": [
         "typescript"
       ],
+      "kind": "plugin",
       "latest_version": "0.1.0",
       "name": "TypeScript skill",
       "plugin": "community.typescript",
@@ -163,7 +175,7 @@
   "signature": {
     "algorithm": "sha256-json-envelope",
     "key_id": "agentrig-registry",
-    "signed_digest": "sha256:f6265df25adaf5646c70c37f9afd3f84387ba3233318b10d0dadfbfc5011db24",
+    "signed_digest": "sha256:a697f74018aa3be93f0593f1536a5118c6a2db569250512a4d9adbf666333d2f",
     "target": "registry.json"
   },
   "source_repository": "https://github.com/agentrig/agentrig-registry"

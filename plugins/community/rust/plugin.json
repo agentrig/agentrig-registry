@@ -15,11 +15,13 @@
   "advisories": [
     "ADV-2026-0001"
   ],
+  "artifact": "community.rust",
   "description": "Rust quality checks: fmt, clippy, tests.",
   "installability": "blocked",
   "keywords": [
     "rust"
   ],
+  "kind": "plugin",
   "latest_version": "0.1.0",
   "name": "Rust skill",
   "namespace": "community",

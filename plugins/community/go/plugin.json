@@ -12,11 +12,13 @@
     "trust_tier": "listed",
     "version": "0.1.0"
   },
+  "artifact": "community.go",
   "description": "Go quality checks: fmt, vet, tests.",
   "installability": "discovery_only",
   "keywords": [
     "go"
   ],
+  "kind": "plugin",
   "latest_version": "0.1.0",
   "name": "Go skill",
   "namespace": "community",

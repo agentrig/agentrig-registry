@@ -63,7 +63,8 @@
       "items": {
         "type": "object",
         "required": [
-          "plugin",
+          "kind",
+          "artifact",
           "name",
           "description",
           "latest_version",
@@ -73,6 +74,12 @@
           "installability"
         ],
         "properties": {
+          "kind": {
+            "$ref": "https://agentrig.ai/schema/registry-contract.definitions.json#/$defs/artifactKind"
+          },
+          "artifact": {
+            "$ref": "https://agentrig.ai/schema/registry-contract.definitions.json#/$defs/artifactId"
+          },
           "plugin": {
             "$ref": "https://agentrig.ai/schema/registry-contract.definitions.json#/$defs/pluginId"
           },

@@ -8,7 +8,6 @@
     "upstream_repo",
     "upstream_tag",
     "upstream_commit",
-    "plugin_path",
     "submitted_by",
     "snapshot_created_at",
     "snapshot_tree_digest"
@@ -31,6 +30,12 @@
     "plugin_path": {
       "$ref": "https://agentrig.ai/schema/registry-contract.definitions.json#/$defs/relativePluginPath"
     },
+    "artifact_kind": {
+      "$ref": "https://agentrig.ai/schema/registry-contract.definitions.json#/$defs/artifactKind"
+    },
+    "artifact_path": {
+      "$ref": "https://agentrig.ai/schema/registry-contract.definitions.json#/$defs/relativePluginPath"
+    },
     "submitted_by": {
       "type": "string",
       "minLength": 1
@@ -43,5 +48,28 @@
       "$ref": "https://agentrig.ai/schema/registry-contract.definitions.json#/$defs/sha256Digest"
     }
   },
+  "oneOf": [
+    {
+      "required": [
+        "plugin_path"
+      ],
+      "not": {
+        "required": [
+          "artifact_path"
+        ]
+      }
+    },
+    {
+      "required": [
+        "artifact_kind",
+        "artifact_path"
+      ],
+      "not": {
+        "required": [
+          "plugin_path"
+        ]
+      }
+    }
+  ],
   "additionalProperties": false
 }

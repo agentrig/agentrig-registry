@@ -7,6 +7,11 @@ import { fileURLToPath } from 'node:url'
 
 const REGISTRY_SCHEMA_URL = 'https://agentrig.ai/schema/registry.json'
 const PLUGIN_SCHEMA_URL = 'https://agentrig.ai/schema/plugin.v1.json'
+const STANDALONE_MANIFEST_SCHEMA_URLS = {
+  skill: 'https://agentrig.ai/schema/skill.v1.json',
+  mcp: 'https://agentrig.ai/schema/mcp.v1.json',
+  hook: 'https://agentrig.ai/schema/hook.v1.json',
+}
 const PLUGIN_HISTORY_SCHEMA_URL = 'https://agentrig.ai/schema/plugin-history.json'
 const ADVISORIES_SCHEMA_URL = 'https://agentrig.ai/schema/advisories.json'
 const SOURCE_SCHEMA_URL = 'https://agentrig.ai/schema/agentrig-source.json'
@@ -41,6 +46,33 @@ const VALID_REVIEW_STATUS = new Set(['pending', 'approved', 'rejected', 'blocked
 const VALID_SCANNER_STATUS = new Set(['pass', 'warn', 'fail'])
 const VALID_ADVISORY_SEVERITIES = new Set(['low', 'medium', 'high', 'critical'])
 const VALID_ADVISORY_TYPES = new Set(['security', 'integrity', 'policy', 'malware', 'legal', 'deprecation', 'other'])
+const VALID_ARTIFACT_KINDS = new Set(['plugin', 'skill', 'mcp', 'hook'])
+const STANDALONE_ARTIFACT_LAYOUTS = [
+  {
+    kind: 'skill',
+    root: 'skills',
+    historyFile: 'skill.json',
+    manifestDir: '.skill',
+    manifestFile: 'skill.json',
+    manifestField: 'entry',
+  },
+  {
+    kind: 'mcp',
+    root: 'mcps',
+    historyFile: 'mcp.json',
+    manifestDir: '.mcp',
+    manifestFile: 'mcp.json',
+    manifestField: 'config',
+  },
+  {
+    kind: 'hook',
+    root: 'hooks',
+    historyFile: 'hook.json',
+    manifestDir: '.hook',
+    manifestFile: 'hook.json',
+    manifestField: 'config',
+  },
+]
 
 const ROOT_ALLOWED_ENTRIES = new Set([
   '.github',
@@ -48,10 +80,13 @@ const ROOT_ALLOWED_ENTRIES = new Set([
   'README.md',
   'advisories.json',
   'docs',
+  'hooks',
+  'mcps',
   'plugins',
   'registry.json',
   'schemas',
   'scripts',
+  'skills',
 ])
 
 const REQUIRED_VERSION_FILES = new Set([
@@ -202,6 +237,18 @@ async function ensureDirectory(dirPath, label) {
   const stat = await fs.lstat(dirPath)
   assert(!stat.isSymbolicLink(), `${label} must be a directory, not a symlink`)
   assert(stat.isDirectory(), `${label} must be a directory`)
+}
+
+async function pathExists(targetPath) {
+  try {
+    await fs.lstat(targetPath)
+    return true
+  } catch (error) {
+    if (error && typeof error === 'object' && 'code' in error && error.code === 'ENOENT') {
+      return false
+    }
+    throw error
+  }
 }
 
 function parseSemver(version) {
@@ -396,11 +443,62 @@ function validatePluginManifest(manifest, pluginId, version, where) {
   }
 }
 
-function canonicalizeSourceArtifact(artifact, expectedSnapshotDigest, where) {
+function assertArtifactKind(value, where) {
+  assertSetMember(value, VALID_ARTIFACT_KINDS, where)
+}
+
+function validateStandaloneManifest(manifest, layout, artifactId, version, where) {
+  assertPlainObject(manifest, where)
+  assertAdditionalProperties(
+    manifest,
+    new Set([
+      '$schema',
+      'kind',
+      'id',
+      'name',
+      'description',
+      'version',
+      'author',
+      'license',
+      'keywords',
+      'capability_set',
+      'declared_network_domains',
+      'declared_secrets',
+      'runtime_requirements',
+      layout.manifestField,
+    ]),
+    where,
+  )
+  if ('$schema' in manifest) {
+    assert(manifest.$schema === STANDALONE_MANIFEST_SCHEMA_URLS[layout.kind], `Invalid ${where}.$schema: expected "${STANDALONE_MANIFEST_SCHEMA_URLS[layout.kind]}"`)
+  }
+  assert(manifest.kind === `agentrig:${layout.kind}`, `Invalid ${where}.kind: expected "agentrig:${layout.kind}"`)
+  assert(manifest.id === artifactId, `Invalid ${where}.id: expected "${artifactId}"`)
+  assert(manifest.version === version, `Invalid ${where}.version: expected "${version}"`)
+  assertString(manifest.name, `${where}.name`)
+  assertString(manifest.description, `${where}.description`)
+  assertOptionalString(manifest.author, `${where}.author`)
+  assertOptionalString(manifest.license, `${where}.license`)
+  assertPattern(manifest.id, PLUGIN_ID_PATTERN, `${where}.id`)
+  assertPattern(manifest.version, SEMVER_PATTERN, `${where}.version`)
+
+  if ('keywords' in manifest) validateStringArray(manifest.keywords, `${where}.keywords`)
+  if ('capability_set' in manifest) validateStringArray(manifest.capability_set, `${where}.capability_set`)
+  if ('declared_network_domains' in manifest) validateStringArray(manifest.declared_network_domains, `${where}.declared_network_domains`)
+  if ('declared_secrets' in manifest) validateStringArray(manifest.declared_secrets, `${where}.declared_secrets`)
+  if ('runtime_requirements' in manifest) validateStringArray(manifest.runtime_requirements, `${where}.runtime_requirements`)
+
+  assert(layout.manifestField in manifest, `Invalid ${where}.${layout.manifestField}: expected a canonical relative path`)
+  const entryPath = manifest[layout.manifestField]
+  assertString(entryPath, `${where}.${layout.manifestField}`)
+  assertPattern(entryPath, RELATIVE_PATH_PATTERN, `${where}.${layout.manifestField}`)
+}
+
+function canonicalizeSourceArtifact(artifact, artifactMeta, expectedSnapshotDigest, where) {
   assertPlainObject(artifact, where)
   assertAdditionalProperties(
     artifact,
-    new Set(['$schema', 'upstream_repo', 'upstream_tag', 'upstream_commit', 'plugin_path', 'submitted_by', 'snapshot_created_at', 'snapshot_tree_digest']),
+    new Set(['$schema', 'upstream_repo', 'upstream_tag', 'upstream_commit', 'plugin_path', 'artifact_kind', 'artifact_path', 'submitted_by', 'snapshot_created_at', 'snapshot_tree_digest']),
     where,
   )
   if ('$schema' in artifact) {
@@ -409,36 +507,59 @@ function canonicalizeSourceArtifact(artifact, expectedSnapshotDigest, where) {
   assertUri(artifact.upstream_repo, `${where}.upstream_repo`)
   assertString(artifact.upstream_tag, `${where}.upstream_tag`)
   assertPattern(artifact.upstream_commit, FULL_COMMIT_SHA_PATTERN, `${where}.upstream_commit`)
-  assertString(artifact.plugin_path, `${where}.plugin_path`)
-  assertPattern(artifact.plugin_path, RELATIVE_PATH_PATTERN, `${where}.plugin_path`)
+  if (artifactMeta.kind === 'plugin') {
+    assertString(artifact.plugin_path, `${where}.plugin_path`)
+    assertPattern(artifact.plugin_path, RELATIVE_PATH_PATTERN, `${where}.plugin_path`)
+    assert(!('artifact_path' in artifact), `Invalid ${where}.artifact_path: plugin source artifacts must use plugin_path`)
+    assert(!('artifact_kind' in artifact), `Invalid ${where}.artifact_kind: plugin source artifacts must use plugin_path`)
+  } else {
+    assert(artifact.artifact_kind === artifactMeta.kind, `Invalid ${where}.artifact_kind: expected "${artifactMeta.kind}"`)
+    assertString(artifact.artifact_path, `${where}.artifact_path`)
+    assertPattern(artifact.artifact_path, RELATIVE_PATH_PATTERN, `${where}.artifact_path`)
+    assert(!('plugin_path' in artifact), `Invalid ${where}.plugin_path: standalone artifact sources must use artifact_path`)
+  }
   assertString(artifact.submitted_by, `${where}.submitted_by`)
   assertDateTime(artifact.snapshot_created_at, `${where}.snapshot_created_at`)
   if ('snapshot_tree_digest' in artifact) {
     assertPattern(artifact.snapshot_tree_digest, SHA256_PATTERN, `${where}.snapshot_tree_digest`)
   }
-  return sortKeys({
+  const canonical = {
     $schema: SOURCE_SCHEMA_URL,
     upstream_repo: artifact.upstream_repo,
     upstream_tag: artifact.upstream_tag,
     upstream_commit: artifact.upstream_commit,
-    plugin_path: artifact.plugin_path,
     submitted_by: artifact.submitted_by,
     snapshot_created_at: artifact.snapshot_created_at,
     snapshot_tree_digest: expectedSnapshotDigest,
-  })
+  }
+  if (artifactMeta.kind === 'plugin') {
+    canonical.plugin_path = artifact.plugin_path
+  } else {
+    canonical.artifact_kind = artifactMeta.kind
+    canonical.artifact_path = artifact.artifact_path
+  }
+  return sortKeys(canonical)
 }
 
-function canonicalizeLockArtifact(artifact, pluginId, version, expectedFileDigests, expectedSnapshotDigest, where) {
+function canonicalizeLockArtifact(artifact, artifactMeta, version, expectedFileDigests, expectedSnapshotDigest, where) {
   assertPlainObject(artifact, where)
   assertAdditionalProperties(
     artifact,
-    new Set(['$schema', 'plugin', 'version', 'file_digests', 'capability_set', 'declared_network_domains', 'declared_secrets', 'runtime_requirements', 'dependencies', 'snapshot_digest']),
+    new Set(['$schema', 'plugin', 'artifact_kind', 'artifact_id', 'version', 'file_digests', 'capability_set', 'declared_network_domains', 'declared_secrets', 'runtime_requirements', 'dependencies', 'snapshot_digest']),
     where,
   )
   if ('$schema' in artifact) {
     assert(artifact.$schema === LOCK_SCHEMA_URL, `Invalid ${where}.$schema: expected "${LOCK_SCHEMA_URL}"`)
   }
-  assert(artifact.plugin === pluginId, `Invalid ${where}.plugin: expected "${pluginId}"`)
+  if (artifactMeta.kind === 'plugin') {
+    assert(artifact.plugin === artifactMeta.artifactId, `Invalid ${where}.plugin: expected "${artifactMeta.artifactId}"`)
+    assert(!('artifact_kind' in artifact), `Invalid ${where}.artifact_kind: plugin lock artifacts must use plugin`)
+    assert(!('artifact_id' in artifact), `Invalid ${where}.artifact_id: plugin lock artifacts must use plugin`)
+  } else {
+    assert(artifact.artifact_kind === artifactMeta.kind, `Invalid ${where}.artifact_kind: expected "${artifactMeta.kind}"`)
+    assert(artifact.artifact_id === artifactMeta.artifactId, `Invalid ${where}.artifact_id: expected "${artifactMeta.artifactId}"`)
+    assert(!('plugin' in artifact), `Invalid ${where}.plugin: standalone artifact locks must use artifact_id`)
+  }
   assert(artifact.version === version, `Invalid ${where}.version: expected "${version}"`)
   validateFileDigests(artifact.file_digests, `${where}.file_digests`)
   validateStringArray(artifact.capability_set, `${where}.capability_set`)
@@ -457,9 +578,8 @@ function canonicalizeLockArtifact(artifact, pluginId, version, expectedFileDiges
   if ('snapshot_digest' in artifact) {
     assertPattern(artifact.snapshot_digest, SHA256_PATTERN, `${where}.snapshot_digest`)
   }
-  return sortKeys({
+  const canonical = {
     $schema: LOCK_SCHEMA_URL,
-    plugin: pluginId,
     version,
     file_digests: expectedFileDigests,
     capability_set: artifact.capability_set,
@@ -468,7 +588,14 @@ function canonicalizeLockArtifact(artifact, pluginId, version, expectedFileDiges
     runtime_requirements: artifact.runtime_requirements,
     dependencies: artifact.dependencies,
     snapshot_digest: expectedSnapshotDigest,
-  })
+  }
+  if (artifactMeta.kind === 'plugin') {
+    canonical.plugin = artifactMeta.artifactId
+  } else {
+    canonical.artifact_kind = artifactMeta.kind
+    canonical.artifact_id = artifactMeta.artifactId
+  }
+  return sortKeys(canonical)
 }
 
 function validateReviewArtifact(artifact, where) {
@@ -552,33 +679,47 @@ function makeActiveVersionRecord(versionRecord) {
   return Object.fromEntries(VERSION_RECORD_FIELDS.map((field) => [field, versionRecord[field]]))
 }
 
-function generateHistoryDocument(pluginMeta) {
-  const latestVersionRecord = pluginMeta.versions[0]
-  return sortKeys({
+function generateHistoryDocument(artifactMeta) {
+  const latestVersionRecord = artifactMeta.versions[0]
+  const history = {
     $schema: PLUGIN_HISTORY_SCHEMA_URL,
-    plugin: pluginMeta.pluginId,
-    namespace: pluginMeta.namespace,
-    name: pluginMeta.name,
-    description: pluginMeta.description,
+    kind: artifactMeta.kind,
+    artifact: artifactMeta.artifactId,
+    namespace: artifactMeta.namespace,
+    name: artifactMeta.name,
+    description: artifactMeta.description,
     latest_version: latestVersionRecord.version,
     trust_tier: latestVersionRecord.trust_tier,
     installability: latestVersionRecord.installability,
     active_version: makeActiveVersionRecord(latestVersionRecord),
-    keywords: maybeArray(pluginMeta.keywords),
-    advisories: maybeArray(pluginMeta.advisoryIds),
-    versions: pluginMeta.versions.map((versionRecord) => Object.fromEntries(VERSION_RECORD_FIELDS.map((field) => [field, versionRecord[field]]))),
-  })
+    keywords: maybeArray(artifactMeta.keywords),
+    advisories: maybeArray(artifactMeta.advisoryIds),
+    versions: artifactMeta.versions.map((versionRecord) => Object.fromEntries(VERSION_RECORD_FIELDS.map((field) => [field, versionRecord[field]]))),
+  }
+  if (artifactMeta.kind === 'plugin') {
+    history.plugin = artifactMeta.artifactId
+  }
+  return sortKeys(history)
 }
 
-function validateHistoryDocument(history, pluginMeta, expectedHistoryPath) {
+function validateHistoryDocument(history, artifactMeta, expectedHistoryPath) {
   const where = expectedHistoryPath
-  const expected = generateHistoryDocument(pluginMeta)
+  const expected = generateHistoryDocument(artifactMeta)
   assertPlainObject(history, where)
-  assertAdditionalProperties(history, new Set(['$schema', 'plugin', 'namespace', 'name', 'description', 'latest_version', 'trust_tier', 'installability', 'active_version', 'keywords', 'advisories', 'versions']), where)
+  assertAdditionalProperties(history, new Set(['$schema', 'kind', 'artifact', 'plugin', 'namespace', 'name', 'description', 'latest_version', 'trust_tier', 'installability', 'active_version', 'keywords', 'advisories', 'versions']), where)
   if ('$schema' in history) {
     assert(history.$schema === PLUGIN_HISTORY_SCHEMA_URL, `Invalid ${where}.$schema: expected "${PLUGIN_HISTORY_SCHEMA_URL}"`)
   }
-  assertPattern(history.plugin, PLUGIN_ID_PATTERN, `${where}.plugin`)
+  assertArtifactKind(history.kind, `${where}.kind`)
+  assert(history.kind === artifactMeta.kind, `Invalid ${where}.kind: expected "${artifactMeta.kind}"`)
+  assertPattern(history.artifact, PLUGIN_ID_PATTERN, `${where}.artifact`)
+  assert(history.artifact === artifactMeta.artifactId, `Invalid ${where}.artifact: expected "${artifactMeta.artifactId}"`)
+  if (artifactMeta.kind === 'plugin') {
+    assertPattern(history.plugin, PLUGIN_ID_PATTERN, `${where}.plugin`)
+    assert(history.plugin === artifactMeta.artifactId, `Invalid ${where}.plugin: expected "${artifactMeta.artifactId}"`)
+  } else {
+    assert(!('plugin' in history), `Invalid ${where}.plugin: standalone artifact histories must not carry plugin aliases`)
+  }
   assertPattern(history.namespace, NAMESPACE_PATTERN, `${where}.namespace`)
   assertString(history.name, `${where}.name`)
   assertString(history.description, `${where}.description`)
@@ -633,6 +774,18 @@ function validateRegistryDocument(registry, expectedRegistry) {
   assert(registry.signature.target === SIGNATURE_TARGET, `Invalid ${where}.signature.target: expected "${SIGNATURE_TARGET}"`)
   assertPattern(registry.signature.signed_digest, SHA256_PATTERN, `${where}.signature.signed_digest`)
   assertArray(registry.items, `${where}.items`)
+  for (let index = 0; index < registry.items.length; index += 1) {
+    const item = registry.items[index]
+    const itemWhere = `${where}.items[${index}]`
+    assertPlainObject(item, itemWhere)
+    assertArtifactKind(item.kind, `${itemWhere}.kind`)
+    assertPattern(item.artifact, PLUGIN_ID_PATTERN, `${itemWhere}.artifact`)
+    if (item.kind === 'plugin') {
+      assert(item.plugin === item.artifact, `Invalid ${itemWhere}.plugin: expected plugin alias to match artifact`)
+    } else {
+      assert(!('plugin' in item), `Invalid ${itemWhere}.plugin: standalone artifact rows must not carry plugin aliases`)
+    }
+  }
   assert(stableJson(registry) === stableJson(expectedRegistry), `Invalid ${where}: committed registry index drifts from the canonical tree`)
 }
 
@@ -692,6 +845,7 @@ async function collectPluginMetadata(pluginRoot, advisoriesByPlugin, mode, enfor
       assert(versionEntries.length > 0, `plugins/${namespace}/${pluginName}/versions must contain at least one version`)
 
       const pluginId = `${namespace}.${pluginName}`
+      const pluginIdentity = { kind: 'plugin', artifactId: pluginId }
       const versionRecords = []
       pluginVersionLookup.set(pluginId, new Set(versionEntries.map((entry) => entry.name)))
 
@@ -722,12 +876,12 @@ async function collectPluginMetadata(pluginRoot, advisoriesByPlugin, mode, enfor
 
         const sourcePath = path.join(versionDir, 'AGENTRIG_SOURCE.json')
         const sourceArtifact = await readJson(sourcePath)
-        const expectedSourceArtifact = canonicalizeSourceArtifact(sourceArtifact, snapshotDigest, `${relativeVersionRoot}/AGENTRIG_SOURCE.json`)
+        const expectedSourceArtifact = canonicalizeSourceArtifact(sourceArtifact, pluginIdentity, snapshotDigest, `${relativeVersionRoot}/AGENTRIG_SOURCE.json`)
         await upsertJson(sourcePath, expectedSourceArtifact, mode)
 
         const lockPath = path.join(versionDir, 'AGENTRIG_LOCK.json')
         const lockArtifact = await readJson(lockPath)
-        const expectedLockArtifact = canonicalizeLockArtifact(lockArtifact, pluginId, version, fileDigests, snapshotDigest, `${relativeVersionRoot}/AGENTRIG_LOCK.json`)
+        const expectedLockArtifact = canonicalizeLockArtifact(lockArtifact, pluginIdentity, version, fileDigests, snapshotDigest, `${relativeVersionRoot}/AGENTRIG_LOCK.json`)
         await upsertJson(lockPath, expectedLockArtifact, mode)
 
         const reviewArtifact = await readJson(path.join(versionDir, 'AGENTRIG_REVIEW.json'))
@@ -766,9 +920,12 @@ async function collectPluginMetadata(pluginRoot, advisoriesByPlugin, mode, enfor
 
       const latestManifest = await readJson(path.join(versionsDir, versionRecords[0].version, '.plugin', 'plugin.json'))
       const pluginMeta = {
-        pluginId,
+        kind: 'plugin',
+        root: 'plugins',
+        historyFile: 'plugin.json',
+        artifactId: pluginId,
         namespace,
-        pluginName,
+        artifactName: pluginName,
         name: latestManifest.name,
         description: latestManifest.description,
         keywords: latestManifest.keywords ?? [],
@@ -779,8 +936,137 @@ async function collectPluginMetadata(pluginRoot, advisoriesByPlugin, mode, enfor
     }
   }
 
-  pluginMetas.sort((left, right) => left.pluginId.localeCompare(right.pluginId))
+  pluginMetas.sort((left, right) => left.artifactId.localeCompare(right.artifactId))
   return { pluginMetas, pluginVersionLookup }
+}
+
+async function collectStandaloneArtifactMetadata(repoRoot, layout, mode) {
+  const artifactRoot = path.join(repoRoot, layout.root)
+  if (!(await pathExists(artifactRoot))) {
+    return []
+  }
+
+  await ensureDirectory(artifactRoot, `${layout.root}/`)
+  const namespaceEntries = await listEntries(artifactRoot)
+  const nonDirectoryEntries = namespaceEntries.filter((entry) => !entry.isDirectory())
+  assert(nonDirectoryEntries.length === 0, `${layout.root}/ must contain only namespace directories, found: ${nonDirectoryEntries.map((entry) => entry.name).join(', ')}`)
+
+  const artifactMetas = []
+
+  for (const namespaceEntry of namespaceEntries) {
+    const namespace = namespaceEntry.name
+    assertPattern(namespace, NAMESPACE_PATTERN, `${layout.root}/${namespace}`)
+    const namespaceDir = path.join(artifactRoot, namespace)
+    await ensureDirectory(namespaceDir, `${layout.root}/${namespace}`)
+
+    const artifactEntries = await listEntries(namespaceDir)
+    const invalidNamespaceChildren = artifactEntries.filter((entry) => !entry.isDirectory())
+    assert(
+      invalidNamespaceChildren.length === 0,
+      `${layout.root}/${namespace} must contain only artifact directories, found: ${invalidNamespaceChildren.map((entry) => entry.name).join(', ')}`,
+    )
+
+    for (const artifactEntry of artifactEntries) {
+      const artifactName = artifactEntry.name
+      assertPattern(artifactName, PLUGIN_NAME_PATTERN, `${layout.root}/${namespace}/${artifactName}`)
+      const artifactId = `${namespace}.${artifactName}`
+      const artifactIdentity = { kind: layout.kind, artifactId }
+      const artifactDir = path.join(namespaceDir, artifactName)
+      await ensureDirectory(artifactDir, `${layout.root}/${namespace}/${artifactName}`)
+
+      const artifactDirEntries = await listEntries(artifactDir)
+      const artifactDirNames = artifactDirEntries.map((entry) => entry.name)
+      const unexpectedArtifactDirEntries = artifactDirNames.filter((entryName) => !new Set([layout.historyFile, 'versions']).has(entryName))
+      assert(unexpectedArtifactDirEntries.length === 0, `${layout.root}/${namespace}/${artifactName} must contain only ${layout.historyFile} and versions/`)
+      assert(artifactDirNames.includes('versions'), `Missing required directory: ${layout.root}/${namespace}/${artifactName}/versions`)
+      if (mode === 'check') {
+        assert(artifactDirNames.includes(layout.historyFile), `Missing required file: ${layout.root}/${namespace}/${artifactName}/${layout.historyFile}`)
+      }
+
+      const versionsDir = path.join(artifactDir, 'versions')
+      await ensureDirectory(versionsDir, `${layout.root}/${namespace}/${artifactName}/versions`)
+      const versionEntries = await listEntries(versionsDir)
+      const invalidVersionEntries = versionEntries.filter((entry) => !entry.isDirectory() || !SEMVER_PATTERN.test(entry.name))
+      assert(
+        invalidVersionEntries.length === 0,
+        `${layout.root}/${namespace}/${artifactName}/versions must contain only semver directories, found: ${invalidVersionEntries.map((entry) => entry.name).join(', ')}`,
+      )
+      assert(versionEntries.length > 0, `${layout.root}/${namespace}/${artifactName}/versions must contain at least one version`)
+
+      const versionRecords = []
+
+      for (const versionEntry of versionEntries.sort((left, right) => compareSemver(right.name, left.name))) {
+        const version = versionEntry.name
+        const versionDir = path.join(versionsDir, version)
+        const relativeVersionRoot = path.posix.join(layout.root, namespace, artifactName, 'versions', version)
+        const relativeManifestPath = path.posix.join(relativeVersionRoot, layout.manifestDir, layout.manifestFile)
+
+        const versionDirEntries = await listEntries(versionDir)
+        const versionNames = new Set(versionDirEntries.map((entry) => entry.name))
+        for (const requiredFile of REQUIRED_VERSION_FILES) {
+          assert(versionNames.has(requiredFile), `Missing required file: ${relativeVersionRoot}/${requiredFile}`)
+        }
+        assert(versionNames.has(layout.manifestDir), `Missing required directory: ${relativeVersionRoot}/${layout.manifestDir}`)
+
+        await ensureDirectory(path.join(versionDir, layout.manifestDir), `${relativeVersionRoot}/${layout.manifestDir}`)
+        await ensureRegularFile(path.join(versionDir, layout.manifestDir, layout.manifestFile), `${relativeManifestPath}`)
+        await ensureRegularFile(path.join(versionDir, 'README.md'), `${relativeVersionRoot}/README.md`)
+        await ensureRegularFile(path.join(versionDir, 'LICENSE'), `${relativeVersionRoot}/LICENSE`)
+        await ensureRegularFile(path.join(versionDir, 'AGENTRIG_SOURCE.json'), `${relativeVersionRoot}/AGENTRIG_SOURCE.json`)
+        await ensureRegularFile(path.join(versionDir, 'AGENTRIG_LOCK.json'), `${relativeVersionRoot}/AGENTRIG_LOCK.json`)
+        await ensureRegularFile(path.join(versionDir, 'AGENTRIG_REVIEW.json'), `${relativeVersionRoot}/AGENTRIG_REVIEW.json`)
+
+        const manifest = await readJson(path.join(versionDir, layout.manifestDir, layout.manifestFile))
+        validateStandaloneManifest(manifest, layout, artifactId, version, relativeManifestPath)
+
+        const { fileDigests, snapshotDigest } = await computeVersionDigests(versionDir)
+
+        const sourcePath = path.join(versionDir, 'AGENTRIG_SOURCE.json')
+        const sourceArtifact = await readJson(sourcePath)
+        const expectedSourceArtifact = canonicalizeSourceArtifact(sourceArtifact, artifactIdentity, snapshotDigest, `${relativeVersionRoot}/AGENTRIG_SOURCE.json`)
+        await upsertJson(sourcePath, expectedSourceArtifact, mode)
+
+        const lockPath = path.join(versionDir, 'AGENTRIG_LOCK.json')
+        const lockArtifact = await readJson(lockPath)
+        const expectedLockArtifact = canonicalizeLockArtifact(lockArtifact, artifactIdentity, version, fileDigests, snapshotDigest, `${relativeVersionRoot}/AGENTRIG_LOCK.json`)
+        await upsertJson(lockPath, expectedLockArtifact, mode)
+
+        const reviewArtifact = await readJson(path.join(versionDir, 'AGENTRIG_REVIEW.json'))
+        validateReviewArtifact(reviewArtifact, `${relativeVersionRoot}/AGENTRIG_REVIEW.json`)
+
+        versionRecords.push(sortKeys({
+          version,
+          path: `${relativeVersionRoot}/`,
+          manifest: relativeManifestPath,
+          source: `${relativeVersionRoot}/AGENTRIG_SOURCE.json`,
+          lock: `${relativeVersionRoot}/AGENTRIG_LOCK.json`,
+          review: `${relativeVersionRoot}/AGENTRIG_REVIEW.json`,
+          trust_tier: reviewArtifact.trust_tier_basis.trust_tier,
+          installability: reviewArtifact.trust_tier_basis.installability,
+          snapshot_digest: snapshotDigest,
+          published_at: reviewArtifact.reviewed_at,
+        }))
+      }
+
+      const latestManifest = await readJson(path.join(versionsDir, versionRecords[0].version, layout.manifestDir, layout.manifestFile))
+      artifactMetas.push({
+        kind: layout.kind,
+        root: layout.root,
+        historyFile: layout.historyFile,
+        artifactId,
+        namespace,
+        artifactName,
+        name: latestManifest.name,
+        description: latestManifest.description,
+        keywords: latestManifest.keywords ?? [],
+        advisoryIds: [],
+        versions: versionRecords,
+      })
+    }
+  }
+
+  artifactMetas.sort((left, right) => left.artifactId.localeCompare(right.artifactId))
+  return artifactMetas
 }
 
 async function syncRegistry(mode) {
@@ -813,6 +1099,14 @@ async function syncRegistry(mode) {
   }
 
   const { pluginMetas } = await collectPluginMetadata(pluginRoot, advisoriesByPlugin, mode)
+  const standaloneMetas = []
+  for (const layout of STANDALONE_ARTIFACT_LAYOUTS) {
+    standaloneMetas.push(...(await collectStandaloneArtifactMetadata(repoRoot, layout, mode)))
+  }
+  const artifactMetas = [...pluginMetas, ...standaloneMetas].sort((left, right) => {
+    const kindComparison = left.kind.localeCompare(right.kind)
+    return kindComparison || left.artifactId.localeCompare(right.artifactId)
+  })
 
   const normalizedAdvisories = sortKeys({
     $schema: ADVISORIES_SCHEMA_URL,
@@ -824,37 +1118,46 @@ async function syncRegistry(mode) {
   const generatedTimes = [normalizedAdvisories.generated_at]
   const registryItems = []
 
-  for (const pluginMeta of pluginMetas) {
-    for (const versionRecord of pluginMeta.versions) {
+  for (const artifactMeta of artifactMetas) {
+    for (const versionRecord of artifactMeta.versions) {
       generatedTimes.push(versionRecord.published_at)
     }
 
-    const historyPath = path.join(repoRoot, 'plugins', pluginMeta.namespace, pluginMeta.pluginName, 'plugin.json')
-    const expectedHistory = generateHistoryDocument(pluginMeta)
+    const historyPath = path.join(repoRoot, artifactMeta.root, artifactMeta.namespace, artifactMeta.artifactName, artifactMeta.historyFile)
+    const historyRelativePath = path.posix.join(artifactMeta.root, artifactMeta.namespace, artifactMeta.artifactName, artifactMeta.historyFile)
+    const expectedHistory = generateHistoryDocument(artifactMeta)
     const existingHistory = await upsertJson(historyPath, expectedHistory, mode)
-    validateHistoryDocument(existingHistory, pluginMeta, path.posix.join('plugins', pluginMeta.namespace, pluginMeta.pluginName, 'plugin.json'))
+    validateHistoryDocument(existingHistory, artifactMeta, historyRelativePath)
 
-    registryItems.push(sortKeys({
-      plugin: pluginMeta.pluginId,
-      name: pluginMeta.name,
-      description: pluginMeta.description,
-      latest_version: pluginMeta.versions[0].version,
-      history: path.posix.join('plugins', pluginMeta.namespace, pluginMeta.pluginName, 'plugin.json'),
-      active_version: makeActiveVersionRecord(pluginMeta.versions[0]),
-      trust_tier: pluginMeta.versions[0].trust_tier,
-      installability: pluginMeta.versions[0].installability,
-      keywords: maybeArray(pluginMeta.keywords),
-      advisories: maybeArray(pluginMeta.advisoryIds),
-    }))
+    const registryItem = {
+      kind: artifactMeta.kind,
+      artifact: artifactMeta.artifactId,
+      name: artifactMeta.name,
+      description: artifactMeta.description,
+      latest_version: artifactMeta.versions[0].version,
+      history: historyRelativePath,
+      active_version: makeActiveVersionRecord(artifactMeta.versions[0]),
+      trust_tier: artifactMeta.versions[0].trust_tier,
+      installability: artifactMeta.versions[0].installability,
+      keywords: maybeArray(artifactMeta.keywords),
+      advisories: maybeArray(artifactMeta.advisoryIds),
+    }
+    if (artifactMeta.kind === 'plugin') {
+      registryItem.plugin = artifactMeta.artifactId
+    }
+    registryItems.push(sortKeys(registryItem))
   }
 
-  registryItems.sort((left, right) => left.plugin.localeCompare(right.plugin))
+  registryItems.sort((left, right) => {
+    const kindComparison = left.kind.localeCompare(right.kind)
+    return kindComparison || left.artifact.localeCompare(right.artifact)
+  })
   const generatedAt = generatedTimes.filter(Boolean).sort().at(-1) ?? '1970-01-01T00:00:00Z'
   const expectedRegistry = generateRegistryDocument(registryItems, generatedAt)
   const existingRegistry = await upsertJson(registryPath, expectedRegistry, mode)
   validateRegistryDocument(existingRegistry, expectedRegistry)
 
-  console.log(`${mode === 'write' ? 'Synced' : 'Validated'} ${pluginMetas.length} plugin(s)`)
+  console.log(`${mode === 'write' ? 'Synced' : 'Validated'} ${artifactMetas.length} registry artifact(s)`)
 }
 
 const mode = process.argv.includes('--write') ? 'write' : 'check'

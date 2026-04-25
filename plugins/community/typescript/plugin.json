@@ -12,11 +12,13 @@
     "trust_tier": "reviewed",
     "version": "0.1.0"
   },
+  "artifact": "community.typescript",
   "description": "TypeScript patterns and guardrails for agentic coding.",
   "installability": "installable",
   "keywords": [
     "typescript"
   ],
+  "kind": "plugin",
   "latest_version": "0.1.0",
   "name": "TypeScript skill",
   "namespace": "community",

@@ -5,7 +5,6 @@
   "type": "object",
   "required": [
     "$schema",
-    "plugin",
     "version",
     "file_digests",
     "capability_set",
@@ -21,6 +20,12 @@
     },
     "plugin": {
       "$ref": "https://agentrig.ai/schema/registry-contract.definitions.json#/$defs/pluginId"
+    },
+    "artifact_kind": {
+      "$ref": "https://agentrig.ai/schema/registry-contract.definitions.json#/$defs/artifactKind"
+    },
+    "artifact_id": {
+      "$ref": "https://agentrig.ai/schema/registry-contract.definitions.json#/$defs/artifactId"
     },
     "version": {
       "$ref": "https://agentrig.ai/schema/registry-contract.definitions.json#/$defs/semver"
@@ -82,5 +87,37 @@
       "$ref": "https://agentrig.ai/schema/registry-contract.definitions.json#/$defs/sha256Digest"
     }
   },
+  "oneOf": [
+    {
+      "required": [
+        "plugin"
+      ],
+      "not": {
+        "anyOf": [
+          {
+            "required": [
+              "artifact_kind"
+            ]
+          },
+          {
+            "required": [
+              "artifact_id"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "required": [
+        "artifact_kind",
+        "artifact_id"
+      ],
+      "not": {
+        "required": [
+          "plugin"
+        ]
+      }
+    }
+  ],
   "additionalProperties": false
 }

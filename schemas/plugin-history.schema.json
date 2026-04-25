@@ -5,7 +5,8 @@
   "type": "object",
   "required": [
     "$schema",
-    "plugin",
+    "kind",
+    "artifact",
     "namespace",
     "name",
     "description",
@@ -18,6 +19,12 @@
   "properties": {
     "$schema": {
       "const": "https://agentrig.ai/schema/plugin-history.json"
+    },
+    "kind": {
+      "$ref": "https://agentrig.ai/schema/registry-contract.definitions.json#/$defs/artifactKind"
+    },
+    "artifact": {
+      "$ref": "https://agentrig.ai/schema/registry-contract.definitions.json#/$defs/artifactId"
     },
     "plugin": {
       "$ref": "https://agentrig.ai/schema/registry-contract.definitions.json#/$defs/pluginId"

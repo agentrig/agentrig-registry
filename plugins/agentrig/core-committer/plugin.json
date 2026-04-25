@@ -12,6 +12,7 @@
     "trust_tier": "official",
     "version": "0.1.0"
   },
+  "artifact": "agentrig.core-committer",
   "description": "Adds a committer skill with a safe commit helper script.",
   "installability": "installable",
   "keywords": [
@@ -19,6 +20,7 @@
     "workflow",
     "core"
   ],
+  "kind": "plugin",
   "latest_version": "0.1.0",
   "name": "Committer skill",
   "namespace": "agentrig",

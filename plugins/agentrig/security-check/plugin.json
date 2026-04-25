@@ -12,6 +12,7 @@
     "trust_tier": "official",
     "version": "0.1.0"
   },
+  "artifact": "agentrig.security-check",
   "description": "Adds a security check skill that runs lightweight checks before shipping.",
   "installability": "installable",
   "keywords": [
@@ -19,6 +20,7 @@
     "workflow",
     "core"
   ],
+  "kind": "plugin",
   "latest_version": "0.1.0",
   "name": "Security check skill",
   "namespace": "agentrig",

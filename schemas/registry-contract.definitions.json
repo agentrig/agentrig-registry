@@ -19,6 +19,19 @@
       "type": "string",
       "pattern": "^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$"
     },
+    "artifactKind": {
+      "type": "string",
+      "enum": [
+        "plugin",
+        "skill",
+        "mcp",
+        "hook"
+      ]
+    },
+    "artifactId": {
+      "type": "string",
+      "pattern": "^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$"
+    },
     "semver": {
       "type": "string",
       "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$"
@@ -91,27 +104,27 @@
     },
     "canonicalVersionPath": {
       "type": "string",
-      "pattern": "^plugins/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/versions/(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?/$"
+      "pattern": "^(plugins|skills|mcps|hooks)/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/versions/(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?/$"
     },
     "canonicalHistoryPath": {
       "type": "string",
-      "pattern": "^plugins/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/plugin\\.json$"
+      "pattern": "^(plugins/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/plugin\\.json|skills/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/skill\\.json|mcps/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/mcp\\.json|hooks/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/hook\\.json)$"
     },
     "canonicalManifestPath": {
       "type": "string",
-      "pattern": "^plugins/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/versions/.+/.plugin/plugin\\.json$"
+      "pattern": "^(plugins/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/versions/.+/.plugin/plugin\\.json|skills/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/versions/.+/.skill/skill\\.json|mcps/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/versions/.+/.mcp/mcp\\.json|hooks/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/versions/.+/.hook/hook\\.json)$"
     },
     "canonicalSourcePath": {
       "type": "string",
-      "pattern": "^plugins/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/versions/.+/AGENTRIG_SOURCE\\.json$"
+      "pattern": "^(plugins|skills|mcps|hooks)/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/versions/.+/AGENTRIG_SOURCE\\.json$"
     },
     "canonicalLockPath": {
       "type": "string",
-      "pattern": "^plugins/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/versions/.+/AGENTRIG_LOCK\\.json$"
+      "pattern": "^(plugins|skills|mcps|hooks)/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/versions/.+/AGENTRIG_LOCK\\.json$"
     },
     "canonicalReviewPath": {
       "type": "string",
-      "pattern": "^plugins/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/versions/.+/AGENTRIG_REVIEW\\.json$"
+      "pattern": "^(plugins|skills|mcps|hooks)/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/versions/.+/AGENTRIG_REVIEW\\.json$"
     },
     "fileDigest": {
       "type": "object",
