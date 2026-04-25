@@ -228,7 +228,15 @@ async function writeJson(filePath, value) {
 }
 
 async function ensureRegularFile(filePath, label) {
-  const stat = await fs.lstat(filePath)
+  let stat
+  try {
+    stat = await fs.lstat(filePath)
+  } catch (error) {
+    if (error && typeof error === 'object' && 'code' in error && error.code === 'ENOENT') {
+      fail(`Missing required file: ${label}`)
+    }
+    throw error
+  }
   assert(!stat.isSymbolicLink(), `${label} must be a regular file, not a symlink`)
   assert(stat.isFile(), `${label} must be a regular file`)
 }
@@ -492,6 +500,7 @@ function validateStandaloneManifest(manifest, layout, artifactId, version, where
   const entryPath = manifest[layout.manifestField]
   assertString(entryPath, `${where}.${layout.manifestField}`)
   assertPattern(entryPath, RELATIVE_PATH_PATTERN, `${where}.${layout.manifestField}`)
+  return entryPath
 }
 
 function canonicalizeSourceArtifact(artifact, artifactMeta, expectedSnapshotDigest, where) {
@@ -1017,7 +1026,11 @@ async function collectStandaloneArtifactMetadata(repoRoot, layout, mode) {
         await ensureRegularFile(path.join(versionDir, 'AGENTRIG_REVIEW.json'), `${relativeVersionRoot}/AGENTRIG_REVIEW.json`)
 
         const manifest = await readJson(path.join(versionDir, layout.manifestDir, layout.manifestFile))
-        validateStandaloneManifest(manifest, layout, artifactId, version, relativeManifestPath)
+        const manifestEntryPath = validateStandaloneManifest(manifest, layout, artifactId, version, relativeManifestPath)
+        await ensureRegularFile(
+          path.join(versionDir, manifestEntryPath),
+          `${relativeVersionRoot}/${manifestEntryPath}`,
+        )
 
         const { fileDigests, snapshotDigest } = await computeVersionDigests(versionDir)
 

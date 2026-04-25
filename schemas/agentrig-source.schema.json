@@ -54,8 +54,17 @@
         "plugin_path"
       ],
       "not": {
-        "required": [
-          "artifact_path"
+        "anyOf": [
+          {
+            "required": [
+              "artifact_kind"
+            ]
+          },
+          {
+            "required": [
+              "artifact_path"
+            ]
+          }
         ]
       }
     },
