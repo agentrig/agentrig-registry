@@ -1,0 +1,19 @@
+{
+  "$schema": "https://agentrig.ai/schema/agentrig-review.json",
+  "review_status": "approved",
+  "reviewer": "AgentRig Registry Fixture",
+  "reviewed_at": "2026-04-26T07:30:00Z",
+  "scanner_summary": {
+    "status": "pass",
+    "findings": []
+  },
+  "policy_decisions": [
+    "Reference test fixture; safe to ingest into the public registry catalog.",
+    "Marked reviewed so installability stays installable for ingestion tests."
+  ],
+  "trust_tier_basis": {
+    "trust_tier": "reviewed",
+    "installability": "installable",
+    "rationale": "Fixture maintained by the registry team to verify plugin and bundled-artifact ingestion."
+  }
+}

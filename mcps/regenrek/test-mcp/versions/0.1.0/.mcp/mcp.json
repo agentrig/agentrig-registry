@@ -1,0 +1,26 @@
+{
+  "$schema": "https://agentrig.ai/schema/mcp.v1.json",
+  "kind": "agentrig:mcp",
+  "id": "regenrek.test-mcp",
+  "name": "Test MCP",
+  "description": "Standalone reference MCP server config used to verify that the registry can publish MCPs outside any plugin.",
+  "version": "0.1.0",
+  "author": "regenrek",
+  "license": "MIT",
+  "keywords": [
+    "test",
+    "fixture",
+    "registry",
+    "standalone",
+    "mcp"
+  ],
+  "capability_set": [
+    "mcp:invoke"
+  ],
+  "declared_network_domains": [],
+  "declared_secrets": [],
+  "runtime_requirements": [
+    "node>=18"
+  ],
+  "config": ".mcp.json"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://agentrig.ai/schema/plugin.v1.json",
+  "kind": "agentrig:plugin",
+  "id": "regenrek.test-submission",
+  "name": "Test Submission",
+  "description": "Reference test plugin that exercises every bundled artifact kind: two skills, an MCP server, and a hook config.",
+  "version": "0.2.0",
+  "author": "regenrek",
+  "license": "MIT",
+  "keywords": [
+    "test",
+    "fixture",
+    "registry"
+  ],
+  "pluginDependencies": [],
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {}
+  }
+}

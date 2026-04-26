@@ -1,0 +1,43 @@
+{
+  "$schema": "https://agentrig.ai/schema/plugin-history.json",
+  "active_version": {
+    "installability": "installable",
+    "lock": "plugins/regenrek/test-submission/versions/0.2.0/AGENTRIG_LOCK.json",
+    "manifest": "plugins/regenrek/test-submission/versions/0.2.0/.plugin/plugin.json",
+    "path": "plugins/regenrek/test-submission/versions/0.2.0/",
+    "published_at": "2026-04-26T07:30:00Z",
+    "review": "plugins/regenrek/test-submission/versions/0.2.0/AGENTRIG_REVIEW.json",
+    "snapshot_digest": "sha256:00cd5671013d280dd97d638f6c9d064f133c6d904b0641d9ae69e115c7d0e203",
+    "source": "plugins/regenrek/test-submission/versions/0.2.0/AGENTRIG_SOURCE.json",
+    "trust_tier": "reviewed",
+    "version": "0.2.0"
+  },
+  "artifact": "regenrek.test-submission",
+  "description": "Reference test plugin that exercises every bundled artifact kind: two skills, an MCP server, and a hook config.",
+  "installability": "installable",
+  "keywords": [
+    "test",
+    "fixture",
+    "registry"
+  ],
+  "kind": "plugin",
+  "latest_version": "0.2.0",
+  "name": "Test Submission",
+  "namespace": "regenrek",
+  "plugin": "regenrek.test-submission",
+  "trust_tier": "reviewed",
+  "versions": [
+    {
+      "installability": "installable",
+      "lock": "plugins/regenrek/test-submission/versions/0.2.0/AGENTRIG_LOCK.json",
+      "manifest": "plugins/regenrek/test-submission/versions/0.2.0/.plugin/plugin.json",
+      "path": "plugins/regenrek/test-submission/versions/0.2.0/",
+      "published_at": "2026-04-26T07:30:00Z",
+      "review": "plugins/regenrek/test-submission/versions/0.2.0/AGENTRIG_REVIEW.json",
+      "snapshot_digest": "sha256:00cd5671013d280dd97d638f6c9d064f133c6d904b0641d9ae69e115c7d0e203",
+      "source": "plugins/regenrek/test-submission/versions/0.2.0/AGENTRIG_SOURCE.json",
+      "trust_tier": "reviewed",
+      "version": "0.2.0"
+    }
+  ]
+}

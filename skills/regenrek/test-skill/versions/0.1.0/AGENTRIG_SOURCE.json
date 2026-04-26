@@ -1,0 +1,11 @@
+{
+  "$schema": "https://agentrig.ai/schema/agentrig-source.json",
+  "artifact_kind": "skill",
+  "artifact_path": "skills/test-submission",
+  "snapshot_created_at": "2026-04-26T07:30:00Z",
+  "snapshot_tree_digest": "sha256:8f35f5b379f84e93efb3b777620f0a8672054364e01788516962e88d89d38887",
+  "submitted_by": "registry-bot@agentrig.ai",
+  "upstream_commit": "6b9dc10f9a5c005ade4a373c6a94d0f46bc4fd43",
+  "upstream_repo": "https://github.com/regenrek/agentrig-test-plugin",
+  "upstream_tag": "v0.2.0"
+}

@@ -1,0 +1,32 @@
+{
+  "$schema": "https://agentrig.ai/schema/agentrig-lock.json",
+  "artifact_id": "regenrek.test-skill",
+  "artifact_kind": "skill",
+  "capability_set": [
+    "skill:read"
+  ],
+  "declared_network_domains": [],
+  "declared_secrets": [],
+  "dependencies": [],
+  "file_digests": [
+    {
+      "digest": "sha256:30276c52bee2f19503a07d4c1d63fd6d5b6bd5ef11d3631ae2720ee128cb0497",
+      "path": ".skill/skill.json"
+    },
+    {
+      "digest": "sha256:61a9b281d04d62cdea4bef57d5e0b702c191b3219456409ac5ed651569228a30",
+      "path": "LICENSE"
+    },
+    {
+      "digest": "sha256:78770ca3cef878d191fe0c2be96f28db78ffb9c3dcd186ead89b2f0b97427f3c",
+      "path": "README.md"
+    },
+    {
+      "digest": "sha256:af0a5a70af77abc566a0910efeab8de2df71f2d842845c8893893cb5898335a0",
+      "path": "SKILL.md"
+    }
+  ],
+  "runtime_requirements": [],
+  "snapshot_digest": "sha256:8f35f5b379f84e93efb3b777620f0a8672054364e01788516962e88d89d38887",
+  "version": "0.1.0"
+}

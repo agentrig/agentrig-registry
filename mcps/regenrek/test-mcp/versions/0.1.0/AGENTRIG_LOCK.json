@@ -1,0 +1,34 @@
+{
+  "$schema": "https://agentrig.ai/schema/agentrig-lock.json",
+  "artifact_id": "regenrek.test-mcp",
+  "artifact_kind": "mcp",
+  "capability_set": [
+    "mcp:invoke"
+  ],
+  "declared_network_domains": [],
+  "declared_secrets": [],
+  "dependencies": [],
+  "file_digests": [
+    {
+      "digest": "sha256:157bb6691b4c8b88646d318f31f41c93fb89b4c19912831231c5cdd9db6aaf8f",
+      "path": ".mcp.json"
+    },
+    {
+      "digest": "sha256:6e2a66c161dc31df8e13955a7da7fa158413bdae82d627fb063a4d81fb8d0d64",
+      "path": ".mcp/mcp.json"
+    },
+    {
+      "digest": "sha256:61a9b281d04d62cdea4bef57d5e0b702c191b3219456409ac5ed651569228a30",
+      "path": "LICENSE"
+    },
+    {
+      "digest": "sha256:3ab9386dfb2881d2c8a1fec54a4e62365a508e261c4347a12c3e15399e9db1ea",
+      "path": "README.md"
+    }
+  ],
+  "runtime_requirements": [
+    "node>=18"
+  ],
+  "snapshot_digest": "sha256:e6e779708a26cb0afda29c91af92290b7667e10e1fc2693cff0e1c18ca45a6a1",
+  "version": "0.1.0"
+}

@@ -1,0 +1,23 @@
+{
+  "$schema": "https://agentrig.ai/schema/skill.v1.json",
+  "kind": "agentrig:skill",
+  "id": "regenrek.test-skill",
+  "name": "Test Skill",
+  "description": "Standalone reference skill used to verify that the registry can publish skills outside any plugin.",
+  "version": "0.1.0",
+  "author": "regenrek",
+  "license": "MIT",
+  "keywords": [
+    "test",
+    "fixture",
+    "registry",
+    "standalone"
+  ],
+  "capability_set": [
+    "skill:read"
+  ],
+  "declared_network_domains": [],
+  "declared_secrets": [],
+  "runtime_requirements": [],
+  "entry": "SKILL.md"
+}

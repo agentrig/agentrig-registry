@@ -1,0 +1,44 @@
+{
+  "$schema": "https://agentrig.ai/schema/plugin-history.json",
+  "active_version": {
+    "installability": "installable",
+    "lock": "hooks/regenrek/test-hook/versions/0.1.0/AGENTRIG_LOCK.json",
+    "manifest": "hooks/regenrek/test-hook/versions/0.1.0/.hook/hook.json",
+    "path": "hooks/regenrek/test-hook/versions/0.1.0/",
+    "published_at": "2026-04-26T07:30:00Z",
+    "review": "hooks/regenrek/test-hook/versions/0.1.0/AGENTRIG_REVIEW.json",
+    "snapshot_digest": "sha256:c0bf496aad24838a3b1c8389bcd1d4ccf6c004362958438f8265f877cf6fa235",
+    "source": "hooks/regenrek/test-hook/versions/0.1.0/AGENTRIG_SOURCE.json",
+    "trust_tier": "reviewed",
+    "version": "0.1.0"
+  },
+  "artifact": "regenrek.test-hook",
+  "description": "Standalone reference hook config used to verify that the registry can publish hooks outside any plugin.",
+  "installability": "installable",
+  "keywords": [
+    "test",
+    "fixture",
+    "registry",
+    "standalone",
+    "hook"
+  ],
+  "kind": "hook",
+  "latest_version": "0.1.0",
+  "name": "Test Hook",
+  "namespace": "regenrek",
+  "trust_tier": "reviewed",
+  "versions": [
+    {
+      "installability": "installable",
+      "lock": "hooks/regenrek/test-hook/versions/0.1.0/AGENTRIG_LOCK.json",
+      "manifest": "hooks/regenrek/test-hook/versions/0.1.0/.hook/hook.json",
+      "path": "hooks/regenrek/test-hook/versions/0.1.0/",
+      "published_at": "2026-04-26T07:30:00Z",
+      "review": "hooks/regenrek/test-hook/versions/0.1.0/AGENTRIG_REVIEW.json",
+      "snapshot_digest": "sha256:c0bf496aad24838a3b1c8389bcd1d4ccf6c004362958438f8265f877cf6fa235",
+      "source": "hooks/regenrek/test-hook/versions/0.1.0/AGENTRIG_SOURCE.json",
+      "trust_tier": "reviewed",
+      "version": "0.1.0"
+    }
+  ]
+}

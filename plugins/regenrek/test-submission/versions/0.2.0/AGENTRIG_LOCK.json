@@ -1,0 +1,51 @@
+{
+  "$schema": "https://agentrig.ai/schema/agentrig-lock.json",
+  "capability_set": [
+    "skill:read",
+    "mcp:invoke",
+    "hook:run"
+  ],
+  "declared_network_domains": [],
+  "declared_secrets": [],
+  "dependencies": [],
+  "file_digests": [
+    {
+      "digest": "sha256:157bb6691b4c8b88646d318f31f41c93fb89b4c19912831231c5cdd9db6aaf8f",
+      "path": ".mcp.json"
+    },
+    {
+      "digest": "sha256:57f9f045b0cd17aa85bfcf6a96bc1b32c1098bc2b9b7ec1cc952a133500268b1",
+      "path": ".plugin/plugin.json"
+    },
+    {
+      "digest": "sha256:f5a97b9cb4ff7c182aa4bfe88a67750172fdeca4cf9d9dd323b4399c41f6f3f3",
+      "path": "hooks/hooks.json"
+    },
+    {
+      "digest": "sha256:61a9b281d04d62cdea4bef57d5e0b702c191b3219456409ac5ed651569228a30",
+      "path": "LICENSE"
+    },
+    {
+      "digest": "sha256:8a34dbcda51696bb3e68b9c146ca68e02c4312b64d106fab0ab54d9f6e9fe0c7",
+      "path": "README.md"
+    },
+    {
+      "digest": "sha256:f6486d7bc8c8b168dd6819162622fd7a81501ab014fe2d55f020e2a78b78e373",
+      "path": "skills/checklist-runner/scripts/run.sh"
+    },
+    {
+      "digest": "sha256:eda843caa59f50fbe85a90bc75f519a7755577a004801ae265f95d9ef75a0cc1",
+      "path": "skills/checklist-runner/SKILL.md"
+    },
+    {
+      "digest": "sha256:cb5b2127069e90cb0c999e8f7305c63359ac5089529d5224f360a7a82fee8102",
+      "path": "skills/test-submission/SKILL.md"
+    }
+  ],
+  "plugin": "regenrek.test-submission",
+  "runtime_requirements": [
+    "node>=18"
+  ],
+  "snapshot_digest": "sha256:00cd5671013d280dd97d638f6c9d064f133c6d904b0641d9ae69e115c7d0e203",
+  "version": "0.2.0"
+}

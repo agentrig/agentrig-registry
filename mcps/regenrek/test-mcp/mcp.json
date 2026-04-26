@@ -1,0 +1,44 @@
+{
+  "$schema": "https://agentrig.ai/schema/plugin-history.json",
+  "active_version": {
+    "installability": "installable",
+    "lock": "mcps/regenrek/test-mcp/versions/0.1.0/AGENTRIG_LOCK.json",
+    "manifest": "mcps/regenrek/test-mcp/versions/0.1.0/.mcp/mcp.json",
+    "path": "mcps/regenrek/test-mcp/versions/0.1.0/",
+    "published_at": "2026-04-26T07:30:00Z",
+    "review": "mcps/regenrek/test-mcp/versions/0.1.0/AGENTRIG_REVIEW.json",
+    "snapshot_digest": "sha256:e6e779708a26cb0afda29c91af92290b7667e10e1fc2693cff0e1c18ca45a6a1",
+    "source": "mcps/regenrek/test-mcp/versions/0.1.0/AGENTRIG_SOURCE.json",
+    "trust_tier": "reviewed",
+    "version": "0.1.0"
+  },
+  "artifact": "regenrek.test-mcp",
+  "description": "Standalone reference MCP server config used to verify that the registry can publish MCPs outside any plugin.",
+  "installability": "installable",
+  "keywords": [
+    "test",
+    "fixture",
+    "registry",
+    "standalone",
+    "mcp"
+  ],
+  "kind": "mcp",
+  "latest_version": "0.1.0",
+  "name": "Test MCP",
+  "namespace": "regenrek",
+  "trust_tier": "reviewed",
+  "versions": [
+    {
+      "installability": "installable",
+      "lock": "mcps/regenrek/test-mcp/versions/0.1.0/AGENTRIG_LOCK.json",
+      "manifest": "mcps/regenrek/test-mcp/versions/0.1.0/.mcp/mcp.json",
+      "path": "mcps/regenrek/test-mcp/versions/0.1.0/",
+      "published_at": "2026-04-26T07:30:00Z",
+      "review": "mcps/regenrek/test-mcp/versions/0.1.0/AGENTRIG_REVIEW.json",
+      "snapshot_digest": "sha256:e6e779708a26cb0afda29c91af92290b7667e10e1fc2693cff0e1c18ca45a6a1",
+      "source": "mcps/regenrek/test-mcp/versions/0.1.0/AGENTRIG_SOURCE.json",
+      "trust_tier": "reviewed",
+      "version": "0.1.0"
+    }
+  ]
+}

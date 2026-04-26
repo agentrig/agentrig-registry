@@ -1,0 +1,11 @@
+{
+  "$schema": "https://agentrig.ai/schema/agentrig-source.json",
+  "artifact_kind": "hook",
+  "artifact_path": "hooks/hooks.json",
+  "snapshot_created_at": "2026-04-26T07:30:00Z",
+  "snapshot_tree_digest": "sha256:c0bf496aad24838a3b1c8389bcd1d4ccf6c004362958438f8265f877cf6fa235",
+  "submitted_by": "registry-bot@agentrig.ai",
+  "upstream_commit": "6b9dc10f9a5c005ade4a373c6a94d0f46bc4fd43",
+  "upstream_repo": "https://github.com/regenrek/agentrig-test-plugin",
+  "upstream_tag": "v0.2.0"
+}

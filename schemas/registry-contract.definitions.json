@@ -48,6 +48,10 @@
       "type": "string",
       "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.?(/|$))(?!.*//).+$"
     },
+    "repoRelativeRootPath": {
+      "type": "string",
+      "pattern": "^(?:\\.|(?!/)(?!.*(?:^|/)\\.\\.?(/|$))(?!.*//).+)$"
+    },
     "trustTier": {
       "type": "string",
       "enum": [

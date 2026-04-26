@@ -1,0 +1,43 @@
+{
+  "$schema": "https://agentrig.ai/schema/plugin-history.json",
+  "active_version": {
+    "installability": "installable",
+    "lock": "skills/regenrek/test-skill/versions/0.1.0/AGENTRIG_LOCK.json",
+    "manifest": "skills/regenrek/test-skill/versions/0.1.0/.skill/skill.json",
+    "path": "skills/regenrek/test-skill/versions/0.1.0/",
+    "published_at": "2026-04-26T07:30:00Z",
+    "review": "skills/regenrek/test-skill/versions/0.1.0/AGENTRIG_REVIEW.json",
+    "snapshot_digest": "sha256:8f35f5b379f84e93efb3b777620f0a8672054364e01788516962e88d89d38887",
+    "source": "skills/regenrek/test-skill/versions/0.1.0/AGENTRIG_SOURCE.json",
+    "trust_tier": "reviewed",
+    "version": "0.1.0"
+  },
+  "artifact": "regenrek.test-skill",
+  "description": "Standalone reference skill used to verify that the registry can publish skills outside any plugin.",
+  "installability": "installable",
+  "keywords": [
+    "test",
+    "fixture",
+    "registry",
+    "standalone"
+  ],
+  "kind": "skill",
+  "latest_version": "0.1.0",
+  "name": "Test Skill",
+  "namespace": "regenrek",
+  "trust_tier": "reviewed",
+  "versions": [
+    {
+      "installability": "installable",
+      "lock": "skills/regenrek/test-skill/versions/0.1.0/AGENTRIG_LOCK.json",
+      "manifest": "skills/regenrek/test-skill/versions/0.1.0/.skill/skill.json",
+      "path": "skills/regenrek/test-skill/versions/0.1.0/",
+      "published_at": "2026-04-26T07:30:00Z",
+      "review": "skills/regenrek/test-skill/versions/0.1.0/AGENTRIG_REVIEW.json",
+      "snapshot_digest": "sha256:8f35f5b379f84e93efb3b777620f0a8672054364e01788516962e88d89d38887",
+      "source": "skills/regenrek/test-skill/versions/0.1.0/AGENTRIG_SOURCE.json",
+      "trust_tier": "reviewed",
+      "version": "0.1.0"
+    }
+  ]
+}

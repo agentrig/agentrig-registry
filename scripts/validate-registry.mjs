@@ -31,6 +31,7 @@ const SEMVER_PATTERN = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-([0-9A-Za-z
 const SHA256_PATTERN = /^sha256:[a-f0-9]{64}$/
 const FULL_COMMIT_SHA_PATTERN = /^[a-f0-9]{40}$/
 const RELATIVE_PATH_PATTERN = /^(?!\/)(?!.*(?:^|\/)\.\.?(?:\/|$))(?!.*\/\/).+$/
+const REPO_RELATIVE_ROOT_PATTERN = /^(?:\.|(?!\/)(?!.*(?:^|\/)\.\.?(?:\/|$))(?!.*\/\/).+)$/
 
 const TRUST_TIER_TO_INSTALLABILITY = {
   official: 'installable',
@@ -518,13 +519,13 @@ function canonicalizeSourceArtifact(artifact, artifactMeta, expectedSnapshotDige
   assertPattern(artifact.upstream_commit, FULL_COMMIT_SHA_PATTERN, `${where}.upstream_commit`)
   if (artifactMeta.kind === 'plugin') {
     assertString(artifact.plugin_path, `${where}.plugin_path`)
-    assertPattern(artifact.plugin_path, RELATIVE_PATH_PATTERN, `${where}.plugin_path`)
+    assertPattern(artifact.plugin_path, REPO_RELATIVE_ROOT_PATTERN, `${where}.plugin_path`)
     assert(!('artifact_path' in artifact), `Invalid ${where}.artifact_path: plugin source artifacts must use plugin_path`)
     assert(!('artifact_kind' in artifact), `Invalid ${where}.artifact_kind: plugin source artifacts must use plugin_path`)
   } else {
     assert(artifact.artifact_kind === artifactMeta.kind, `Invalid ${where}.artifact_kind: expected "${artifactMeta.kind}"`)
     assertString(artifact.artifact_path, `${where}.artifact_path`)
-    assertPattern(artifact.artifact_path, RELATIVE_PATH_PATTERN, `${where}.artifact_path`)
+    assertPattern(artifact.artifact_path, REPO_RELATIVE_ROOT_PATTERN, `${where}.artifact_path`)
     assert(!('plugin_path' in artifact), `Invalid ${where}.plugin_path: standalone artifact sources must use artifact_path`)
   }
   assertString(artifact.submitted_by, `${where}.submitted_by`)

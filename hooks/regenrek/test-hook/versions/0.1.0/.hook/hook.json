@@ -1,0 +1,24 @@
+{
+  "$schema": "https://agentrig.ai/schema/hook.v1.json",
+  "kind": "agentrig:hook",
+  "id": "regenrek.test-hook",
+  "name": "Test Hook",
+  "description": "Standalone reference hook config used to verify that the registry can publish hooks outside any plugin.",
+  "version": "0.1.0",
+  "author": "regenrek",
+  "license": "MIT",
+  "keywords": [
+    "test",
+    "fixture",
+    "registry",
+    "standalone",
+    "hook"
+  ],
+  "capability_set": [
+    "hook:run"
+  ],
+  "declared_network_domains": [],
+  "declared_secrets": [],
+  "runtime_requirements": [],
+  "config": "hooks.json"
+}

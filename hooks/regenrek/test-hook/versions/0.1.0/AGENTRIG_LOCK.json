@@ -1,0 +1,32 @@
+{
+  "$schema": "https://agentrig.ai/schema/agentrig-lock.json",
+  "artifact_id": "regenrek.test-hook",
+  "artifact_kind": "hook",
+  "capability_set": [
+    "hook:run"
+  ],
+  "declared_network_domains": [],
+  "declared_secrets": [],
+  "dependencies": [],
+  "file_digests": [
+    {
+      "digest": "sha256:a775f86dec88f3ff2c0fd54877a5975e627f1616d8cabffb1c02adf13d6c267b",
+      "path": ".hook/hook.json"
+    },
+    {
+      "digest": "sha256:f5a97b9cb4ff7c182aa4bfe88a67750172fdeca4cf9d9dd323b4399c41f6f3f3",
+      "path": "hooks.json"
+    },
+    {
+      "digest": "sha256:61a9b281d04d62cdea4bef57d5e0b702c191b3219456409ac5ed651569228a30",
+      "path": "LICENSE"
+    },
+    {
+      "digest": "sha256:a2e8e521dec18984333ba4622866dcd1f2e7f78f58b0071642aa05fddc97d54a",
+      "path": "README.md"
+    }
+  ],
+  "runtime_requirements": [],
+  "snapshot_digest": "sha256:c0bf496aad24838a3b1c8389bcd1d4ccf6c004362958438f8265f877cf6fa235",
+  "version": "0.1.0"
+}

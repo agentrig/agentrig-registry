@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "test-mcp": {
+      "command": "node",
+      "args": [
+        "./mcp-servers/test-mcp.mjs"
+      ],
+      "env": {}
+    }
+  }
+}

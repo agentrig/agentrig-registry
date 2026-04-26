@@ -28,13 +28,13 @@
       "$ref": "https://agentrig.ai/schema/registry-contract.definitions.json#/$defs/fullCommitSha"
     },
     "plugin_path": {
-      "$ref": "https://agentrig.ai/schema/registry-contract.definitions.json#/$defs/relativePluginPath"
+      "$ref": "https://agentrig.ai/schema/registry-contract.definitions.json#/$defs/repoRelativeRootPath"
     },
     "artifact_kind": {
       "$ref": "https://agentrig.ai/schema/registry-contract.definitions.json#/$defs/artifactKind"
     },
     "artifact_path": {
-      "$ref": "https://agentrig.ai/schema/registry-contract.definitions.json#/$defs/relativePluginPath"
+      "$ref": "https://agentrig.ai/schema/registry-contract.definitions.json#/$defs/repoRelativeRootPath"
     },
     "submitted_by": {
       "type": "string",
