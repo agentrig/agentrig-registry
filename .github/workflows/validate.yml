@@ -8,6 +8,8 @@ on:
 jobs:
   validate:
     runs-on: ubuntu-latest
+    env:
+      REGISTRY_ENVIRONMENT: production
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
@@ -17,4 +19,6 @@ jobs:
           node-version: 20
 
       - name: Validate registry
-        run: node scripts/validate-registry.mjs
+        run: |
+          node scripts/validate-registry-production-policy.test.mjs
+          node scripts/validate-registry.mjs

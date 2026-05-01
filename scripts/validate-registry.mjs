@@ -3,7 +3,7 @@
 import { createHash } from 'node:crypto'
 import { promises as fs } from 'node:fs'
 import path from 'node:path'
-import { fileURLToPath } from 'node:url'
+import { fileURLToPath, pathToFileURL } from 'node:url'
 
 const REGISTRY_SCHEMA_URL = 'https://agentrig.ai/schema/registry.json'
 const PLUGIN_SCHEMA_URL = 'https://agentrig.ai/schema/plugin.v1.json'
@@ -23,6 +23,7 @@ const SOURCE_REPOSITORY = 'https://github.com/agentrig/agentrig-registry'
 const SIGNATURE_ALGORITHM = 'sha256-json-envelope'
 const SIGNATURE_KEY_ID = 'agentrig-registry'
 const SIGNATURE_TARGET = 'registry.json'
+const REGISTRY_ENVIRONMENTS = new Set(['production', 'staging', 'dev'])
 
 const NAMESPACE_PATTERN = /^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/
 const PLUGIN_NAME_PATTERN = /^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/
@@ -156,6 +157,31 @@ function assertSetMember(value, allowed, where) {
 
 function assertPattern(value, pattern, where) {
   assert(pattern.test(value), `Invalid ${where}: got "${value}"`)
+}
+
+function registryEnvironment() {
+  const environment = (process.env.REGISTRY_ENVIRONMENT || 'production').trim()
+  assertSetMember(environment, REGISTRY_ENVIRONMENTS, 'REGISTRY_ENVIRONMENT')
+  return environment
+}
+
+function isProductionTestArtifactId(artifactId) {
+  const [namespace, artifactName] = artifactId.split('.')
+  return (
+    /^test-/.test(namespace) ||
+    /^qa-/.test(namespace) ||
+    /^test-/.test(artifactName) ||
+    /^qa-/.test(artifactName) ||
+    artifactId.startsWith('regenrek.test-')
+  )
+}
+
+function assertProductionArtifactAllowed(artifactId, where) {
+  if (registryEnvironment() !== 'production') return
+  assert(
+    !isProductionTestArtifactId(artifactId),
+    `Invalid ${where}: production registry rejects test/QA artifact "${artifactId}"`,
+  )
 }
 
 function assertUri(value, where) {
@@ -789,6 +815,7 @@ function validateRegistryDocument(registry, expectedRegistry) {
     assertPlainObject(item, itemWhere)
     assertArtifactKind(item.kind, `${itemWhere}.kind`)
     assertPattern(item.artifact, PLUGIN_ID_PATTERN, `${itemWhere}.artifact`)
+    assertProductionArtifactAllowed(item.artifact, `${itemWhere}.artifact`)
     if (item.kind === 'plugin') {
       assert(item.plugin === item.artifact, `Invalid ${itemWhere}.plugin: expected plugin alias to match artifact`)
     } else {
@@ -854,6 +881,7 @@ async function collectPluginMetadata(pluginRoot, advisoriesByPlugin, mode, enfor
       assert(versionEntries.length > 0, `plugins/${namespace}/${pluginName}/versions must contain at least one version`)
 
       const pluginId = `${namespace}.${pluginName}`
+      assertProductionArtifactAllowed(pluginId, `plugins/${namespace}/${pluginName}`)
       const pluginIdentity = { kind: 'plugin', artifactId: pluginId }
       const versionRecords = []
       pluginVersionLookup.set(pluginId, new Set(versionEntries.map((entry) => entry.name)))
@@ -979,6 +1007,7 @@ async function collectStandaloneArtifactMetadata(repoRoot, layout, mode) {
       const artifactName = artifactEntry.name
       assertPattern(artifactName, PLUGIN_NAME_PATTERN, `${layout.root}/${namespace}/${artifactName}`)
       const artifactId = `${namespace}.${artifactName}`
+      assertProductionArtifactAllowed(artifactId, `${layout.root}/${namespace}/${artifactName}`)
       const artifactIdentity = { kind: layout.kind, artifactId }
       const artifactDir = path.join(namespaceDir, artifactName)
       await ensureDirectory(artifactDir, `${layout.root}/${namespace}/${artifactName}`)
@@ -1175,7 +1204,11 @@ async function syncRegistry(mode) {
 
 const mode = process.argv.includes('--write') ? 'write' : 'check'
 
-syncRegistry(mode).catch((error) => {
-  console.error(error instanceof Error ? error.message : String(error))
-  process.exit(1)
-})
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  syncRegistry(mode).catch((error) => {
+    console.error(error instanceof Error ? error.message : String(error))
+    process.exit(1)
+  })
+}
+
+export { assertProductionArtifactAllowed, isProductionTestArtifactId }
