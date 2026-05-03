@@ -1,8 +1,40 @@
 {
   "$schema": "https://agentrig.ai/schema/registry.json",
   "contract_version": "1",
-  "generated_at": "2026-04-16T11:00:00Z",
+  "generated_at": "2026-05-02T12:00:00Z",
   "items": [
+    {
+      "active_version": {
+        "installability": "installable",
+        "lock": "plugins/agentrig/core/versions/0.1.0/AGENTRIG_LOCK.json",
+        "manifest": "plugins/agentrig/core/versions/0.1.0/.plugin/plugin.json",
+        "path": "plugins/agentrig/core/versions/0.1.0/",
+        "published_at": "2026-05-02T12:00:00Z",
+        "review": "plugins/agentrig/core/versions/0.1.0/AGENTRIG_REVIEW.json",
+        "snapshot_digest": "sha256:e8cf5075c1816a74209993303e6051c45725bddab1aabdcc2fd00da2c3a67271",
+        "source": "plugins/agentrig/core/versions/0.1.0/AGENTRIG_SOURCE.json",
+        "trust_tier": "official",
+        "version": "0.1.0"
+      },
+      "artifact": "agentrig.core",
+      "description": "Bundled AgentRig core skills (arig-*): architecture ownership, adapter extraction, lightweight review, duplicate-ownership audit, hard-cut policy, root-cause debugging, and consolidate test suites.",
+      "history": "plugins/agentrig/core/plugin.json",
+      "installability": "installable",
+      "keywords": [
+        "architecture",
+        "ownership",
+        "review",
+        "refactoring",
+        "debugging",
+        "testing",
+        "core"
+      ],
+      "kind": "plugin",
+      "latest_version": "0.1.0",
+      "name": "Core",
+      "plugin": "agentrig.core",
+      "trust_tier": "official"
+    },
     {
       "active_version": {
         "installability": "installable",
@@ -64,7 +96,7 @@
   "signature": {
     "algorithm": "sha256-json-envelope",
     "key_id": "agentrig-registry",
-    "signed_digest": "sha256:858cdcc7a85ee51ed7f3d02fd4d56e386e508b1ce2eb68fe86e79e799d26cab2",
+    "signed_digest": "sha256:67b96769d5243b8362ec6dc6b0002fbf9bfb38de8f6190a7b8252bc64385efa0",
     "target": "registry.json"
   },
   "source_repository": "https://github.com/agentrig/agentrig-registry"
