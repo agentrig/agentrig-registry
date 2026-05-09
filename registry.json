@@ -11,7 +11,7 @@
         "path": "plugins/agentrig/core/versions/0.1.0/",
         "published_at": "2026-05-02T12:00:00Z",
         "review": "plugins/agentrig/core/versions/0.1.0/AGENTRIG_REVIEW.json",
-        "snapshot_digest": "sha256:e8cf5075c1816a74209993303e6051c45725bddab1aabdcc2fd00da2c3a67271",
+        "snapshot_digest": "sha256:bc4cab3e2a546413b36a2c7054e5c352f1c4239f7f8273b582ebe6b422b706dc",
         "source": "plugins/agentrig/core/versions/0.1.0/AGENTRIG_SOURCE.json",
         "trust_tier": "official",
         "version": "0.1.0"
@@ -34,69 +34,13 @@
       "name": "Core",
       "plugin": "agentrig.core",
       "trust_tier": "official"
-    },
-    {
-      "active_version": {
-        "installability": "installable",
-        "lock": "plugins/agentrig/core-committer/versions/0.1.0/AGENTRIG_LOCK.json",
-        "manifest": "plugins/agentrig/core-committer/versions/0.1.0/.plugin/plugin.json",
-        "path": "plugins/agentrig/core-committer/versions/0.1.0/",
-        "published_at": "2026-04-16T10:00:00Z",
-        "review": "plugins/agentrig/core-committer/versions/0.1.0/AGENTRIG_REVIEW.json",
-        "snapshot_digest": "sha256:ee2c5a69f9d556178149b38c91f9960003bdbf480ececa201fd150771af87b18",
-        "source": "plugins/agentrig/core-committer/versions/0.1.0/AGENTRIG_SOURCE.json",
-        "trust_tier": "official",
-        "version": "0.1.0"
-      },
-      "artifact": "agentrig.core-committer",
-      "description": "Adds a committer skill with a safe commit helper script.",
-      "history": "plugins/agentrig/core-committer/plugin.json",
-      "installability": "installable",
-      "keywords": [
-        "git",
-        "workflow",
-        "core"
-      ],
-      "kind": "plugin",
-      "latest_version": "0.1.0",
-      "name": "Committer skill",
-      "plugin": "agentrig.core-committer",
-      "trust_tier": "official"
-    },
-    {
-      "active_version": {
-        "installability": "installable",
-        "lock": "plugins/agentrig/security-check/versions/0.1.0/AGENTRIG_LOCK.json",
-        "manifest": "plugins/agentrig/security-check/versions/0.1.0/.plugin/plugin.json",
-        "path": "plugins/agentrig/security-check/versions/0.1.0/",
-        "published_at": "2026-04-16T11:00:00Z",
-        "review": "plugins/agentrig/security-check/versions/0.1.0/AGENTRIG_REVIEW.json",
-        "snapshot_digest": "sha256:0b255d74b8b5cabf6d522c28fef43055909517b9f6851f361a8a889bc5eb6cc7",
-        "source": "plugins/agentrig/security-check/versions/0.1.0/AGENTRIG_SOURCE.json",
-        "trust_tier": "official",
-        "version": "0.1.0"
-      },
-      "artifact": "agentrig.security-check",
-      "description": "Adds a security check skill that runs lightweight checks before shipping.",
-      "history": "plugins/agentrig/security-check/plugin.json",
-      "installability": "installable",
-      "keywords": [
-        "security",
-        "workflow",
-        "core"
-      ],
-      "kind": "plugin",
-      "latest_version": "0.1.0",
-      "name": "Security check skill",
-      "plugin": "agentrig.security-check",
-      "trust_tier": "official"
     }
   ],
   "registry_alias": "agentrig",
   "signature": {
     "algorithm": "sha256-json-envelope",
     "key_id": "agentrig-registry",
-    "signed_digest": "sha256:67b96769d5243b8362ec6dc6b0002fbf9bfb38de8f6190a7b8252bc64385efa0",
+    "signed_digest": "sha256:e1e07463f203a2446b1f629f8d16aeb83901d32293d96299bf5e62a3919656d7",
     "target": "registry.json"
   },
   "source_repository": "https://github.com/agentrig/agentrig-registry"

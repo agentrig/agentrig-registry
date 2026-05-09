@@ -1,8 +1,14 @@
-# AgentRig Registry Spec
+# AgentRig Verified Mirror Spec
 
-The registry is the public signed installability boundary for AgentRig
-artifacts. A directory entry is not installable until `registry.json` includes a
-non-blocked item for that artifact and the referenced version snapshot validates.
+The registry is a derivative verified mirror of approved AgentRig marketplace
+listings. Canonical marketplace state lives in Convex `artifact_listings`; the
+SDK `InstallBundle` is the canonical install contract. A registry pull request
+is derived from that bundle for public auditability and verification. CLI
+install resolution fetches the bundle from AgentRig marketplace APIs, not from
+this mirror.
+
+Related PlanDB parents: `t-ar-mkt-sdk`, `t-ar-mkt-convex`,
+`t-ar-mkt-web`, `t-ar-mkt-cli`, and `t-ar-mkt-mirror`.
 
 ## Artifact Kinds
 
@@ -21,7 +27,7 @@ MCPs, and hooks.
 legacy `plugin` field as a compatibility alias; all rows use `artifact` as the
 canonical id.
 
-## Layout
+## Mirror Layout
 
 ```text
 plugins/<namespace>/<plugin>/plugin.json
@@ -32,8 +38,8 @@ hooks/<namespace>/<hook>/hook.json
 <kind-root>/<namespace>/<artifact>/versions/<version>/
 ```
 
-Each version directory contains the manifest, provenance, lock, review, README,
-and license files:
+Each version directory contains the mirrored payload files plus provenance,
+lock, and review documents serialized from the SDK `InstallBundle`:
 
 ```text
 .plugin/plugin.json
@@ -48,33 +54,42 @@ LICENSE
 ```
 
 Standalone source artifacts use `artifact_kind` and `artifact_path`. Plugin
-source artifacts use `plugin_path`. The two shapes are mutually exclusive.
+source artifacts use `plugin_path`. Lock files include SDK-owned
+`file_digests[]` entries with `path`, `digest`, and `size`.
 
-Standalone locks use `artifact_kind` and `artifact_id`. Plugin locks use the
-legacy `plugin` field. The two lock shapes are mutually exclusive.
+## Trust Boundary
 
-## Trust And Installability
+AgentRig uses two separate GitHub Apps:
 
-Installability is explicit:
+- `user-repo-sync` (`agentrig-repository-sync`) is the user-repo sync app. It is read-only
+  (`Contents:Read`, `Metadata:Read`) and is installed by users on their own
+  repositories for source fetch and scan flows.
+- `registry-mirror` (`agentrig-repository-mirror`) is the registry mirror app. It has registry
+  write and pull-request permissions only for `agentrig/agentrig-registry`
+  and staging mirrors. Users never install this app.
 
-- `official` and `reviewed` may be `installable`.
-- `listed` is `discovery_only`.
-- `blocked` and `yanked` always win.
+Convex chooses the app profile explicitly at each GitHub App call site. The
+mirror lane must never borrow the user-repo-sync installation token for writes.
 
-No web directory row, local repo scan, discovery submission, profile ownership,
-or AI enrichment draft can make an artifact installable. The signed registry
-item is the only install authority.
+## Installability
+
+Installability is inherited from the Convex listing and SDK bundle:
+
+- `available` listings may be mirrored.
+- `yanked` or `taken_down` listings are not eligible for new mirror PRs.
+- If a previously mirrored listing is later yanked or taken down, the mirror
+  lane opens a follow-up PR that marks the mirrored registry entry as `yanked`.
 
 ## Bundled Artifacts
 
-Skills, MCPs, and hooks bundled inside plugins are discovered from plugin locks
-by `@agentrig/sdk`. They inherit the parent plugin's registry trust and
-installability unless and until they have their own standalone signed registry
-entry.
+Skills, MCPs, and hooks bundled inside plugins are discovered from mirrored
+plugin locks by `@agentrig/sdk`. They inherit the parent plugin mirror metadata
+unless and until they have their own standalone mirrored entry.
 
 Local selected-artifact installs are represented as AgentRig Selection Bundles. The
-registry records source trust; the SDK and CLI handle closure checks,
-materialization metadata, and hash-owned uninstall ledger records.
+registry records mirror provenance; the SDK and CLI handle closure checks,
+materialization metadata, hash verification, and install resolution through
+the Convex listing endpoint.
 
 ## Validation
 
@@ -82,6 +97,8 @@ materialization metadata, and hash-owned uninstall ledger records.
 node scripts/validate-registry.mjs --check
 ```
 
-The validator checks registry item kind/id consistency, version history paths,
-manifest shapes, source/lock mutual exclusion, referenced standalone entry files,
-review artifacts, and derived registry output.
+The validator checks the committed mirror tree for deterministic structure:
+registry item kind/id consistency, version history paths, manifest shapes,
+source/lock fields, referenced standalone entry files, review artifacts, and
+derived mirror output. It validates the derivative mirror, not marketplace
+authority.

@@ -1,8 +1,11 @@
 # ADR 0001: Canonical Registry Contract
 
+> ⚠️ Superseded by [ADR 0002](./0002-convex-listing-as-canonical-source.md). The 'agentrig-registry as install authority' model described below was replaced by Convex `artifact_listings` + SDK `InstallBundle` as canonical.
+
 ## Status
 
 Accepted.
+Status: Superseded by ADR 0002 (2026-05-09).
 
 ## Decision
 

@@ -7,7 +7,7 @@
     "path": "plugins/agentrig/core/versions/0.1.0/",
     "published_at": "2026-05-02T12:00:00Z",
     "review": "plugins/agentrig/core/versions/0.1.0/AGENTRIG_REVIEW.json",
-    "snapshot_digest": "sha256:e8cf5075c1816a74209993303e6051c45725bddab1aabdcc2fd00da2c3a67271",
+    "snapshot_digest": "sha256:bc4cab3e2a546413b36a2c7054e5c352f1c4239f7f8273b582ebe6b422b706dc",
     "source": "plugins/agentrig/core/versions/0.1.0/AGENTRIG_SOURCE.json",
     "trust_tier": "official",
     "version": "0.1.0"
@@ -38,7 +38,7 @@
       "path": "plugins/agentrig/core/versions/0.1.0/",
       "published_at": "2026-05-02T12:00:00Z",
       "review": "plugins/agentrig/core/versions/0.1.0/AGENTRIG_REVIEW.json",
-      "snapshot_digest": "sha256:e8cf5075c1816a74209993303e6051c45725bddab1aabdcc2fd00da2c3a67271",
+      "snapshot_digest": "sha256:bc4cab3e2a546413b36a2c7054e5c352f1c4239f7f8273b582ebe6b422b706dc",
       "source": "plugins/agentrig/core/versions/0.1.0/AGENTRIG_SOURCE.json",
       "trust_tier": "official",
       "version": "0.1.0"

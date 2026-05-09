@@ -404,6 +404,7 @@ async function computeVersionDigests(versionDir) {
     fileDigests.push({
       path: file.relativePath,
       digest: sha256Hex(content),
+      size: content.byteLength,
     })
   }
 
@@ -419,7 +420,7 @@ function validateStringArray(items, where) {
   }
 }
 
-function validateFileDigests(fileDigests, where) {
+function validateFileDigests(fileDigests, where, options = { requireSize: true }) {
   assertArray(fileDigests, where)
   const seenPaths = new Set()
   let lastPath = null
@@ -427,10 +428,13 @@ function validateFileDigests(fileDigests, where) {
     const item = fileDigests[index]
     const itemWhere = `${where}[${index}]`
     assertPlainObject(item, itemWhere)
-    assertAdditionalProperties(item, new Set(['path', 'digest']), itemWhere)
+    assertAdditionalProperties(item, new Set(['path', 'digest', 'size']), itemWhere)
     assertString(item.path, `${itemWhere}.path`)
     assertPattern(item.path, RELATIVE_PATH_PATTERN, `${itemWhere}.path`)
     assertPattern(item.digest, SHA256_PATTERN, `${itemWhere}.digest`)
+    if (options.requireSize || 'size' in item) {
+      assert(Number.isInteger(item.size) && item.size >= 0, `Invalid ${itemWhere}.size: expected a non-negative integer`)
+    }
     assert(!DIGEST_EXCLUDED_RELATIVE_PATHS.has(item.path), `Invalid ${itemWhere}.path: ${item.path} is derived and must not be digest-addressed`)
     assert(!seenPaths.has(item.path), `Invalid ${where}: duplicate digest path "${item.path}"`)
     if (lastPath != null) {
@@ -576,7 +580,7 @@ function canonicalizeSourceArtifact(artifact, artifactMeta, expectedSnapshotDige
   return sortKeys(canonical)
 }
 
-function canonicalizeLockArtifact(artifact, artifactMeta, version, expectedFileDigests, expectedSnapshotDigest, where) {
+function canonicalizeLockArtifact(artifact, artifactMeta, version, expectedFileDigests, expectedSnapshotDigest, where, mode) {
   assertPlainObject(artifact, where)
   assertAdditionalProperties(
     artifact,
@@ -596,7 +600,7 @@ function canonicalizeLockArtifact(artifact, artifactMeta, version, expectedFileD
     assert(!('plugin' in artifact), `Invalid ${where}.plugin: standalone artifact locks must use artifact_id`)
   }
   assert(artifact.version === version, `Invalid ${where}.version: expected "${version}"`)
-  validateFileDigests(artifact.file_digests, `${where}.file_digests`)
+  validateFileDigests(artifact.file_digests, `${where}.file_digests`, { requireSize: mode !== 'write' })
   validateStringArray(artifact.capability_set, `${where}.capability_set`)
   validateStringArray(artifact.declared_network_domains, `${where}.declared_network_domains`)
   validateStringArray(artifact.declared_secrets, `${where}.declared_secrets`)
@@ -918,7 +922,7 @@ async function collectPluginMetadata(pluginRoot, advisoriesByPlugin, mode, enfor
 
         const lockPath = path.join(versionDir, 'AGENTRIG_LOCK.json')
         const lockArtifact = await readJson(lockPath)
-        const expectedLockArtifact = canonicalizeLockArtifact(lockArtifact, pluginIdentity, version, fileDigests, snapshotDigest, `${relativeVersionRoot}/AGENTRIG_LOCK.json`)
+        const expectedLockArtifact = canonicalizeLockArtifact(lockArtifact, pluginIdentity, version, fileDigests, snapshotDigest, `${relativeVersionRoot}/AGENTRIG_LOCK.json`, mode)
         await upsertJson(lockPath, expectedLockArtifact, mode)
 
         const reviewArtifact = await readJson(path.join(versionDir, 'AGENTRIG_REVIEW.json'))
@@ -1070,7 +1074,7 @@ async function collectStandaloneArtifactMetadata(repoRoot, layout, mode) {
 
         const lockPath = path.join(versionDir, 'AGENTRIG_LOCK.json')
         const lockArtifact = await readJson(lockPath)
-        const expectedLockArtifact = canonicalizeLockArtifact(lockArtifact, artifactIdentity, version, fileDigests, snapshotDigest, `${relativeVersionRoot}/AGENTRIG_LOCK.json`)
+        const expectedLockArtifact = canonicalizeLockArtifact(lockArtifact, artifactIdentity, version, fileDigests, snapshotDigest, `${relativeVersionRoot}/AGENTRIG_LOCK.json`, mode)
         await upsertJson(lockPath, expectedLockArtifact, mode)
 
         const reviewArtifact = await readJson(path.join(versionDir, 'AGENTRIG_REVIEW.json'))
