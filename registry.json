@@ -1,7 +1,7 @@
 {
   "$schema": "https://agentrig.ai/schema/registry.json",
   "contract_version": "1",
-  "generated_at": "2026-05-02T12:00:00Z",
+  "generated_at": "2026-05-11T17:10:57.567Z",
   "items": [
     {
       "active_version": {
@@ -34,13 +34,44 @@
       "name": "agentrig.core",
       "plugin": "agentrig.core",
       "trust_tier": "official"
+    },
+    {
+      "active_version": {
+        "installability": "installable",
+        "lock": "plugins/regenrek/agentic-engineer-core/versions/0.1.0/AGENTRIG_LOCK.json",
+        "manifest": "plugins/regenrek/agentic-engineer-core/versions/0.1.0/.plugin/plugin.json",
+        "path": "plugins/regenrek/agentic-engineer-core/versions/0.1.0/",
+        "published_at": "2026-05-11T17:10:57.567Z",
+        "review": "plugins/regenrek/agentic-engineer-core/versions/0.1.0/AGENTRIG_REVIEW.json",
+        "snapshot_digest": "sha256:43f6169f490272e0b6d8a25c23ec9f9f57e7f899a5aeacb85021b04a3b2830bc",
+        "source": "plugins/regenrek/agentic-engineer-core/versions/0.1.0/AGENTRIG_SOURCE.json",
+        "trust_tier": "reviewed",
+        "version": "0.1.0"
+      },
+      "artifact": "regenrek.agentic-engineer-core",
+      "description": "Core agentic engineering skills for architecture ownership, root-cause debugging, hard-cut refactors, duplicate ownership audits, and test-suite consolidation.",
+      "history": "plugins/regenrek/agentic-engineer-core/plugin.json",
+      "installability": "installable",
+      "keywords": [
+        "architecture",
+        "debugging",
+        "refactoring",
+        "testing",
+        "ownership",
+        "agentic-engineering"
+      ],
+      "kind": "plugin",
+      "latest_version": "0.1.0",
+      "name": "regenrek.agentic-engineer-core",
+      "plugin": "regenrek.agentic-engineer-core",
+      "trust_tier": "reviewed"
     }
   ],
   "registry_alias": "agentrig",
   "signature": {
     "algorithm": "sha256-json-envelope",
     "key_id": "agentrig-registry",
-    "signed_digest": "sha256:da0706c2b51128ba75e688c42c7f5d7dc9b6f9a01e6483da2096f23506cf72fb",
+    "signed_digest": "sha256:220ce329ae53197ac3b37464752f0a60fc17ad49d60610a757ddee1dd1387fa9",
     "target": "registry.json"
   },
   "source_repository": "https://github.com/agentrig/agentrig-registry"

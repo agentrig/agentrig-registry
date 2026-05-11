@@ -1,0 +1,46 @@
+{
+  "$schema": "https://agentrig.ai/schema/plugin-history.json",
+  "active_version": {
+    "installability": "installable",
+    "lock": "plugins/regenrek/agentic-engineer-core/versions/0.1.0/AGENTRIG_LOCK.json",
+    "manifest": "plugins/regenrek/agentic-engineer-core/versions/0.1.0/.plugin/plugin.json",
+    "path": "plugins/regenrek/agentic-engineer-core/versions/0.1.0/",
+    "published_at": "2026-05-11T17:10:57.567Z",
+    "review": "plugins/regenrek/agentic-engineer-core/versions/0.1.0/AGENTRIG_REVIEW.json",
+    "snapshot_digest": "sha256:43f6169f490272e0b6d8a25c23ec9f9f57e7f899a5aeacb85021b04a3b2830bc",
+    "source": "plugins/regenrek/agentic-engineer-core/versions/0.1.0/AGENTRIG_SOURCE.json",
+    "trust_tier": "reviewed",
+    "version": "0.1.0"
+  },
+  "artifact": "regenrek.agentic-engineer-core",
+  "description": "Core agentic engineering skills for architecture ownership, root-cause debugging, hard-cut refactors, duplicate ownership audits, and test-suite consolidation.",
+  "installability": "installable",
+  "keywords": [
+    "architecture",
+    "debugging",
+    "refactoring",
+    "testing",
+    "ownership",
+    "agentic-engineering"
+  ],
+  "kind": "plugin",
+  "latest_version": "0.1.0",
+  "name": "regenrek.agentic-engineer-core",
+  "namespace": "regenrek",
+  "plugin": "regenrek.agentic-engineer-core",
+  "trust_tier": "reviewed",
+  "versions": [
+    {
+      "installability": "installable",
+      "lock": "plugins/regenrek/agentic-engineer-core/versions/0.1.0/AGENTRIG_LOCK.json",
+      "manifest": "plugins/regenrek/agentic-engineer-core/versions/0.1.0/.plugin/plugin.json",
+      "path": "plugins/regenrek/agentic-engineer-core/versions/0.1.0/",
+      "published_at": "2026-05-11T17:10:57.567Z",
+      "review": "plugins/regenrek/agentic-engineer-core/versions/0.1.0/AGENTRIG_REVIEW.json",
+      "snapshot_digest": "sha256:43f6169f490272e0b6d8a25c23ec9f9f57e7f899a5aeacb85021b04a3b2830bc",
+      "source": "plugins/regenrek/agentic-engineer-core/versions/0.1.0/AGENTRIG_SOURCE.json",
+      "trust_tier": "reviewed",
+      "version": "0.1.0"
+    }
+  ]
+}

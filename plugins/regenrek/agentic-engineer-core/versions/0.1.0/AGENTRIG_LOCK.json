@@ -1,0 +1,98 @@
+{
+  "$schema": "https://agentrig.ai/schema/agentrig-lock.json",
+  "capability_set": [],
+  "declared_network_domains": [],
+  "declared_secrets": [],
+  "dependencies": [],
+  "file_digests": [
+    {
+      "digest": "sha256:e8b102cd783bcd7285c12bcfbc2666b940b747290189e1a81f7f55f9af4e1426",
+      "path": ".plugin/plugin.json",
+      "size": 737
+    },
+    {
+      "digest": "sha256:adc37366f403835c1470ab2df93d3837d4719372fc1ef8593d922e06f033f8b2",
+      "path": "LICENSE",
+      "size": 4
+    },
+    {
+      "digest": "sha256:e9e0e4841c3cacd11dfde4cffd6010c0d56dc0ad538f595c59c0fe073133b3e8",
+      "path": "README.md",
+      "size": 1119
+    },
+    {
+      "digest": "sha256:6e343b25113eaf73412afd3f2332783f58b002c993ec1ecd1ce36b95771b958f",
+      "path": "skills/architecture-ownership/agents/openai.yaml",
+      "size": 318
+    },
+    {
+      "digest": "sha256:0f67d21c43a550b247a31db103eb228db356866700974c7af524c33811d0af6f",
+      "path": "skills/architecture-ownership/references/ownership-matrix.md",
+      "size": 3609
+    },
+    {
+      "digest": "sha256:0e6d567c8ea166b73667d85509829cce42e1d7c6edf91a63d8711ee3d4d9dfc0",
+      "path": "skills/architecture-ownership/SKILL.md",
+      "size": 5145
+    },
+    {
+      "digest": "sha256:af1911562d2a8cde5b266f721c008702d2563c9e46e76d940dd5a046490f3d1c",
+      "path": "skills/consolidate-test-suites/agents/openai.yaml",
+      "size": 319
+    },
+    {
+      "digest": "sha256:a6e350d734435dd3462481bf909ec90bb270baa1db579fc41d0c0659a1cc02db",
+      "path": "skills/consolidate-test-suites/SKILL.md",
+      "size": 4030
+    },
+    {
+      "digest": "sha256:69606a65b21fc86d25421e6da80cd939ff871947e8d62dc197c2c191ff37745f",
+      "path": "skills/find-duplicate-ownership/agents/duplicate-ownership-explorer.toml",
+      "size": 747
+    },
+    {
+      "digest": "sha256:0ef6c312ca68f0cafb24e3ae87561ee5931ccfc78af659a7a4fdf8f9552de6f9",
+      "path": "skills/find-duplicate-ownership/agents/openai.yaml",
+      "size": 290
+    },
+    {
+      "digest": "sha256:bf70da6e6c580bce58375ba1974db89495dd4d684bacebf2ff716da6b7d00ffe",
+      "path": "skills/find-duplicate-ownership/agents/ownership-taxonomy-mapper.toml",
+      "size": 677
+    },
+    {
+      "digest": "sha256:5de04d07ae1c3f1a6599d6f1714679bd20d22f03ddef0abd3e722f9755892736",
+      "path": "skills/find-duplicate-ownership/agents/ssot-judge.toml",
+      "size": 706
+    },
+    {
+      "digest": "sha256:79f8769e3d1befa16ca12ae9ec5e5715a985c5cd50076f08661063a8358c23e3",
+      "path": "skills/find-duplicate-ownership/references/audit-prompts.md",
+      "size": 2982
+    },
+    {
+      "digest": "sha256:9f404d69f7586e1177d4b3a4d60be51f7997c3e50d8e5c1bfec05313f2f7251e",
+      "path": "skills/find-duplicate-ownership/SKILL.md",
+      "size": 5073
+    },
+    {
+      "digest": "sha256:817aaba7a7530bbfe98df69536836e2569f6bdba03b752860581918655478dd5",
+      "path": "skills/hard-cut/agents/openai.yaml",
+      "size": 241
+    },
+    {
+      "digest": "sha256:e622c9215a87bfd0d3038629f2bf16c984ad689ca162145e1b6fb3c329e2a059",
+      "path": "skills/hard-cut/SKILL.md",
+      "size": 4096
+    },
+    {
+      "digest": "sha256:ceeccc4f1a7815762c490d2227fa5cf64ab835339b002728ea0fcd415ef635ed",
+      "path": "skills/root-cause-finder/SKILL.md",
+      "size": 3435
+    }
+  ],
+  "plugin": "regenrek.agentic-engineer-core",
+  "runtime_requirements": [],
+  "snapshot_digest": "sha256:43f6169f490272e0b6d8a25c23ec9f9f57e7f899a5aeacb85021b04a3b2830bc",
+  "version": "0.1.0"
+}
