@@ -43,7 +43,7 @@
         "path": "plugins/regenrek/agentic-engineer-core/versions/0.1.0/",
         "published_at": "2026-05-11T17:10:57.567Z",
         "review": "plugins/regenrek/agentic-engineer-core/versions/0.1.0/AGENTRIG_REVIEW.json",
-        "snapshot_digest": "sha256:34fd7c3e14803145a3cc98e510185e566765df4fb00b03d34fd2e635d8ce0528",
+        "snapshot_digest": "sha256:6fccc16ed1f0d0beffdc5a54e1ac862c5309e1ab543c2b68f476b2b00955cd82",
         "source": "plugins/regenrek/agentic-engineer-core/versions/0.1.0/AGENTRIG_SOURCE.json",
         "trust_tier": "reviewed",
         "version": "0.1.0"
@@ -63,7 +63,7 @@
   "signature": {
     "algorithm": "sha256-json-envelope",
     "key_id": "agentrig-registry",
-    "signed_digest": "sha256:bdebc0d2c2127d8069316d6c465c89cd0e5a1d5ec75a4fa385e8309831e12b64",
+    "signed_digest": "sha256:371f281c1cda6635cb01d37c9ff3329efd2b8ba463826fd650a653f39dd42bc8",
     "target": "registry.json"
   },
   "source_repository": "https://github.com/agentrig/agentrig-registry"

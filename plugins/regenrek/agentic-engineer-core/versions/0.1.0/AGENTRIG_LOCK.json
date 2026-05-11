@@ -11,6 +11,11 @@
       "size": 737
     },
     {
+      "digest": "sha256:b0b3308b4a5482a269cc7b96745deff94d3262a9897821a1746e655f40431db2",
+      "path": "LICENSE",
+      "size": 12
+    },
+    {
       "digest": "sha256:e9e0e4841c3cacd11dfde4cffd6010c0d56dc0ad538f595c59c0fe073133b3e8",
       "path": "README.md",
       "size": 1119
@@ -88,6 +93,6 @@
   ],
   "plugin": "regenrek.agentic-engineer-core",
   "runtime_requirements": [],
-  "snapshot_digest": "sha256:34fd7c3e14803145a3cc98e510185e566765df4fb00b03d34fd2e635d8ce0528",
+  "snapshot_digest": "sha256:6fccc16ed1f0d0beffdc5a54e1ac862c5309e1ab543c2b68f476b2b00955cd82",
   "version": "0.1.0"
 }
