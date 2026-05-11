@@ -1,0 +1,10 @@
+{
+  "$schema": "https://agentrig.ai/schema/agentrig-source.json",
+  "plugin_path": "plugins/regenrek.agentic-engineer-core",
+  "snapshot_created_at": "2026-05-11T17:58:49.105Z",
+  "snapshot_tree_digest": "sha256:34fd7c3e14803145a3cc98e510185e566765df4fb00b03d34fd2e635d8ce0528",
+  "submitted_by": "submission:nh7apnsmmsxzq572115p35tsm186hfke",
+  "upstream_commit": "9a81ae7fad9d9e9f3a6027ce7c528409febbd738",
+  "upstream_repo": "https://github.com/regenrek/agent-skills",
+  "upstream_tag": "main"
+}
