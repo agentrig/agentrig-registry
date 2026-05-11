@@ -97,6 +97,27 @@ const REQUIRED_VERSION_FILES = new Set([
   'LICENSE',
   'README.md',
 ])
+const OPEN_PLUGIN_MANIFEST_ALLOWED_FIELDS = new Set([
+  '$schema',
+  'name',
+  'description',
+  'version',
+  'author',
+  'license',
+  'keywords',
+  'homepage',
+  'repository',
+  'logo',
+  'commands',
+  'agents',
+  'skills',
+  'rules',
+  'hooks',
+  'mcpServers',
+  'lspServers',
+  'outputStyles',
+  'x-agentrig',
+])
 const BLOCKED_DELIVERY_EXTENSIONS = ['.tgz', '.tar.gz', '.zip', '.tar', '.gz', '.bz2', '.xz', '.7z', '.rar']
 const BLOCKED_DELIVERY_NAME_PATTERNS = [
   /^checksums?(\.[a-z0-9]+)?$/i,
@@ -447,34 +468,23 @@ function validateFileDigests(fileDigests, where, options = { requireSize: true }
 
 function validatePluginManifest(manifest, pluginId, version, where) {
   assertPlainObject(manifest, where)
-  assertAdditionalProperties(
-    manifest,
-    new Set(['$schema', 'kind', 'id', 'name', 'description', 'version', 'author', 'license', 'keywords', 'pluginDependencies', 'configSchema', 'x-agentrig']),
-    where,
-  )
+  assertAdditionalProperties(manifest, OPEN_PLUGIN_MANIFEST_ALLOWED_FIELDS, where)
   if ('$schema' in manifest) {
     assert(manifest.$schema === PLUGIN_SCHEMA_URL, `Invalid ${where}.$schema: expected "${PLUGIN_SCHEMA_URL}"`)
   }
-  assert(manifest.kind === 'agentrig:plugin', `Invalid ${where}.kind: expected "agentrig:plugin"`)
-  assert(manifest.id === pluginId, `Invalid ${where}.id: expected "${pluginId}"`)
-  assert(manifest.version === version, `Invalid ${where}.version: expected "${version}"`)
   assertString(manifest.name, `${where}.name`)
-  assertString(manifest.description, `${where}.description`)
-  assertOptionalString(manifest.author, `${where}.author`)
+  assert(manifest.name === pluginId, `Invalid ${where}.name: expected "${pluginId}"`)
+  assertPattern(manifest.name, PLUGIN_ID_PATTERN, `${where}.name`)
+
+  if ('version' in manifest) {
+    assert(manifest.version === version, `Invalid ${where}.version: expected "${version}"`)
+    assertPattern(manifest.version, SEMVER_PATTERN, `${where}.version`)
+  }
+  if ('description' in manifest) assertString(manifest.description, `${where}.description`)
+  if ('author' in manifest) assertPlainObject(manifest.author, `${where}.author`)
   assertOptionalString(manifest.license, `${where}.license`)
-  assertPattern(manifest.id, PLUGIN_ID_PATTERN, `${where}.id`)
-  assertPattern(manifest.version, SEMVER_PATTERN, `${where}.version`)
 
   if ('keywords' in manifest) validateStringArray(manifest.keywords, `${where}.keywords`)
-
-  if ('pluginDependencies' in manifest) {
-    validateStringArray(manifest.pluginDependencies, `${where}.pluginDependencies`)
-    for (let index = 0; index < manifest.pluginDependencies.length; index += 1) {
-      assertPattern(manifest.pluginDependencies[index], PLUGIN_ID_PATTERN, `${where}.pluginDependencies[${index}]`)
-    }
-  }
-
-  assertPlainObject(manifest.configSchema, `${where}.configSchema`)
 
   if ('x-agentrig' in manifest) {
     assertPlainObject(manifest['x-agentrig'], `${where}.x-agentrig`)
@@ -511,13 +521,13 @@ function validateStandaloneManifest(manifest, layout, artifactId, version, where
     assert(manifest.$schema === STANDALONE_MANIFEST_SCHEMA_URLS[layout.kind], `Invalid ${where}.$schema: expected "${STANDALONE_MANIFEST_SCHEMA_URLS[layout.kind]}"`)
   }
   assert(manifest.kind === `agentrig:${layout.kind}`, `Invalid ${where}.kind: expected "agentrig:${layout.kind}"`)
-  assert(manifest.id === artifactId, `Invalid ${where}.id: expected "${artifactId}"`)
+  assert(manifest['id'] === artifactId, `Invalid ${where}.id: expected "${artifactId}"`)
   assert(manifest.version === version, `Invalid ${where}.version: expected "${version}"`)
   assertString(manifest.name, `${where}.name`)
   assertString(manifest.description, `${where}.description`)
   assertOptionalString(manifest.author, `${where}.author`)
   assertOptionalString(manifest.license, `${where}.license`)
-  assertPattern(manifest.id, PLUGIN_ID_PATTERN, `${where}.id`)
+  assertPattern(manifest['id'], PLUGIN_ID_PATTERN, `${where}.id`)
   assertPattern(manifest.version, SEMVER_PATTERN, `${where}.version`)
 
   if ('keywords' in manifest) validateStringArray(manifest.keywords, `${where}.keywords`)
