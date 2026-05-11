@@ -11,7 +11,7 @@
         "path": "plugins/agentrig/core/versions/0.1.0/",
         "published_at": "2026-05-02T12:00:00Z",
         "review": "plugins/agentrig/core/versions/0.1.0/AGENTRIG_REVIEW.json",
-        "snapshot_digest": "sha256:bc4cab3e2a546413b36a2c7054e5c352f1c4239f7f8273b582ebe6b422b706dc",
+        "snapshot_digest": "sha256:43b26ae7cc6e9f03efe6349b206e03f91e092501d61ff81c37317f2aa8cee2e8",
         "source": "plugins/agentrig/core/versions/0.1.0/AGENTRIG_SOURCE.json",
         "trust_tier": "official",
         "version": "0.1.0"
@@ -31,7 +31,7 @@
       ],
       "kind": "plugin",
       "latest_version": "0.1.0",
-      "name": "Core",
+      "name": "agentrig.core",
       "plugin": "agentrig.core",
       "trust_tier": "official"
     }
@@ -40,7 +40,7 @@
   "signature": {
     "algorithm": "sha256-json-envelope",
     "key_id": "agentrig-registry",
-    "signed_digest": "sha256:e1e07463f203a2446b1f629f8d16aeb83901d32293d96299bf5e62a3919656d7",
+    "signed_digest": "sha256:da0706c2b51128ba75e688c42c7f5d7dc9b6f9a01e6483da2096f23506cf72fb",
     "target": "registry.json"
   },
   "source_repository": "https://github.com/agentrig/agentrig-registry"
