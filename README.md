@@ -1,15 +1,15 @@
 # AgentRig Registry
 
 `agentrig-registry` is the public verified mirror for approved AgentRig
-marketplace artifacts.
+registry/catalog artifacts.
 
-Canonical marketplace state lives in Convex `artifact_listings`, and the SDK
+Canonical catalog state lives in Convex `artifact_listings`, and the SDK
 `InstallBundle` is the install contract used by the CLI. This repository stores
 derived mirror snapshots for audit and verification.
 
 Repo inspection, discovery submissions, and `agentrig use <owner/repo>` are not
-marketplace installs. They may record external-repo provenance, but they do not
-create marketplace trust or mirror entries.
+registry installs. They may record external-repo provenance, but they do not
+create registry trust or mirror entries.
 
 Related PlanDB parents: `t-ar-mkt-sdk`, `t-ar-mkt-convex`,
 `t-ar-mkt-web`, `t-ar-mkt-cli`, and `t-ar-mkt-mirror`.
@@ -54,9 +54,9 @@ Mirrored refs use `<registryAlias>/<namespace.artifact>@<version>`, with
 - `blocked` -> `blocked`
 - `yanked` -> `yanked`
 
-Only `official` and `reviewed` entries represent approved marketplace artifacts
+Only `official` and `reviewed` entries represent approved registry artifacts
 that were mirrored. Discovery rows, profile ownership, AI-enriched descriptions,
-and scanned external repositories stay outside the marketplace install contract
+and scanned external repositories stay outside the registry install contract
 until an admin-approved listing exists.
 
 ## Update and validate

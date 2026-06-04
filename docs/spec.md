@@ -1,10 +1,10 @@
 # AgentRig Verified Mirror Spec
 
-The registry is a derivative verified mirror of approved AgentRig marketplace
-listings. Canonical marketplace state lives in Convex `artifact_listings`; the
+The registry is a derivative verified mirror of approved AgentRig catalog
+listings. Canonical catalog state lives in Convex `artifact_listings`; the
 SDK `InstallBundle` is the canonical install contract. A registry pull request
 is derived from that bundle for public auditability and verification. CLI
-install resolution fetches the bundle from AgentRig marketplace APIs, not from
+install resolution fetches the bundle from AgentRig install APIs, not from
 this mirror.
 
 Related PlanDB parents: `t-ar-mkt-sdk`, `t-ar-mkt-convex`,
@@ -100,5 +100,5 @@ node scripts/validate-registry.mjs --check
 The validator checks the committed mirror tree for deterministic structure:
 registry item kind/id consistency, version history paths, manifest shapes,
 source/lock fields, referenced standalone entry files, review artifacts, and
-derived mirror output. It validates the derivative mirror, not marketplace
+derived mirror output. It validates the derivative mirror, not install
 authority.
