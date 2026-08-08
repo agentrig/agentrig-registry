@@ -4,6 +4,8 @@ import assert from 'node:assert/strict'
 import {
   assertProductionArtifactAllowed,
   isProductionTestArtifactId,
+  pluginManifestRelativePath,
+  validatePluginManifest,
 } from './validate-registry.mjs'
 
 assert.equal(isProductionTestArtifactId('test-acme.workflow'), true)
@@ -22,5 +24,31 @@ assert.doesNotThrow(() => assertProductionArtifactAllowed('community.typescript'
 
 process.env.REGISTRY_ENVIRONMENT = 'staging'
 assert.doesNotThrow(() => assertProductionArtifactAllowed('regenrek.test-submission', 'fixture'))
+
+assert.equal(pluginManifestRelativePath('community.demo', '1.0.0'), 'plugin.json')
+assert.equal(pluginManifestRelativePath('agentrig.core', '0.1.0'), '.plugin/plugin.json')
+assert.equal(pluginManifestRelativePath('agentrig.core', '0.2.0'), 'plugin.json')
+
+const agentPluginManifest = {
+  $schema: 'https://agent-plugins.org/schemas/1.0.0/plugin.schema.json',
+  name: 'community.typescript',
+  version: '1.0.0',
+  extensions: { 'ai.agentrig': { kind: 'plugin' } },
+}
+assert.doesNotThrow(() => validatePluginManifest(
+  agentPluginManifest,
+  'community.typescript',
+  '1.0.0',
+  'fixture/plugin.json',
+))
+assert.throws(
+  () => validatePluginManifest(
+    { ...agentPluginManifest, $schema: 'https://agentrig.ai/schema/plugin.v1.json' },
+    'community.typescript',
+    '1.0.0',
+    'fixture/plugin.json',
+  ),
+  /expected "https:\/\/agent-plugins\.org\/schemas\/1\.0\.0\/plugin\.schema\.json"/,
+)
 
 console.log('Validated production registry namespace policy')

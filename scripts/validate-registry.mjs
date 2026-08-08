@@ -6,7 +6,7 @@ import path from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 
 const REGISTRY_SCHEMA_URL = 'https://agentrig.ai/schema/registry.json'
-const PLUGIN_SCHEMA_URL = 'https://agentrig.ai/schema/plugin.v1.json'
+const PLUGIN_SCHEMA_URL = 'https://agent-plugins.org/schemas/1.0.0/plugin.schema.json'
 const STANDALONE_MANIFEST_SCHEMA_URLS = {
   skill: 'https://agentrig.ai/schema/skill.v1.json',
   mcp: 'https://agentrig.ai/schema/mcp.v1.json',
@@ -97,7 +97,19 @@ const REQUIRED_VERSION_FILES = new Set([
   'LICENSE',
   'README.md',
 ])
-const OPEN_PLUGIN_MANIFEST_ALLOWED_FIELDS = new Set([
+const AGENT_PLUGIN_MANIFEST_ALLOWED_FIELDS = new Set([
+  '$schema',
+  'name',
+  'version',
+  'description',
+  'author',
+  'homepage',
+  'repository',
+  'license',
+  'keywords',
+  'extensions',
+])
+const HISTORICAL_OPEN_PLUGIN_MANIFEST_ALLOWED_FIELDS = new Set([
   '$schema',
   'name',
   'description',
@@ -118,6 +130,16 @@ const OPEN_PLUGIN_MANIFEST_ALLOWED_FIELDS = new Set([
   'outputStyles',
   'x-agentrig',
 ])
+const HISTORICAL_OPEN_PLUGIN_VERSIONS = new Set([
+  'agentrig.core@0.1.0',
+  'regenrek.agentic-engineer-core@0.1.0',
+])
+
+function pluginManifestRelativePath(pluginId, version) {
+  return HISTORICAL_OPEN_PLUGIN_VERSIONS.has(`${pluginId}@${version}`)
+    ? '.plugin/plugin.json'
+    : 'plugin.json'
+}
 const BLOCKED_DELIVERY_EXTENSIONS = ['.tgz', '.tar.gz', '.zip', '.tar', '.gz', '.bz2', '.xz', '.7z', '.rar']
 const BLOCKED_DELIVERY_NAME_PATTERNS = [
   /^checksums?(\.[a-z0-9]+)?$/i,
@@ -466,10 +488,17 @@ function validateFileDigests(fileDigests, where, options = { requireSize: true }
   }
 }
 
-function validatePluginManifest(manifest, pluginId, version, where) {
+function validatePluginManifest(manifest, pluginId, version, where, options = {}) {
   assertPlainObject(manifest, where)
-  assertAdditionalProperties(manifest, OPEN_PLUGIN_MANIFEST_ALLOWED_FIELDS, where)
-  if ('$schema' in manifest) {
+  const historical = options.historical === true
+  assertAdditionalProperties(
+    manifest,
+    historical ? HISTORICAL_OPEN_PLUGIN_MANIFEST_ALLOWED_FIELDS : AGENT_PLUGIN_MANIFEST_ALLOWED_FIELDS,
+    where,
+  )
+  if (historical) {
+    assert(manifest.$schema === 'https://agentrig.ai/schema/plugin.v1.json', `Invalid historical ${where}.$schema`)
+  } else {
     assert(manifest.$schema === PLUGIN_SCHEMA_URL, `Invalid ${where}.$schema: expected "${PLUGIN_SCHEMA_URL}"`)
   }
   assertString(manifest.name, `${where}.name`)
@@ -486,8 +515,14 @@ function validatePluginManifest(manifest, pluginId, version, where) {
 
   if ('keywords' in manifest) validateStringArray(manifest.keywords, `${where}.keywords`)
 
-  if ('x-agentrig' in manifest) {
+  if (historical && 'x-agentrig' in manifest) {
     assertPlainObject(manifest['x-agentrig'], `${where}.x-agentrig`)
+  }
+  if (!historical && 'extensions' in manifest) {
+    assertPlainObject(manifest.extensions, `${where}.extensions`)
+    if ('ai.agentrig' in manifest.extensions) {
+      assertPlainObject(manifest.extensions['ai.agentrig'], `${where}.extensions["ai.agentrig"]`)
+    }
   }
 }
 
@@ -904,24 +939,29 @@ async function collectPluginMetadata(pluginRoot, advisoriesByPlugin, mode, enfor
         const version = versionEntry.name
         const versionDir = path.join(versionsDir, version)
         const relativeVersionRoot = path.posix.join('plugins', namespace, pluginName, 'versions', version)
+        const manifestRelativePath = pluginManifestRelativePath(pluginId, version)
+        const historicalOpenPlugin = manifestRelativePath !== 'plugin.json'
 
         const versionDirEntries = await listEntries(versionDir)
         const versionNames = new Set(versionDirEntries.map((entry) => entry.name))
         for (const requiredFile of REQUIRED_VERSION_FILES) {
           assert(versionNames.has(requiredFile), `Missing required file: ${relativeVersionRoot}/${requiredFile}`)
         }
-        assert(versionNames.has('.plugin'), `Missing required directory: ${relativeVersionRoot}/.plugin`)
-
-        await ensureDirectory(path.join(versionDir, '.plugin'), `${relativeVersionRoot}/.plugin`)
-        await ensureRegularFile(path.join(versionDir, '.plugin', 'plugin.json'), `${relativeVersionRoot}/.plugin/plugin.json`)
+        if (historicalOpenPlugin) {
+          assert(versionNames.has('.plugin'), `Missing historical directory: ${relativeVersionRoot}/.plugin`)
+          await ensureDirectory(path.join(versionDir, '.plugin'), `${relativeVersionRoot}/.plugin`)
+        }
+        await ensureRegularFile(path.join(versionDir, manifestRelativePath), `${relativeVersionRoot}/${manifestRelativePath}`)
         await ensureRegularFile(path.join(versionDir, 'README.md'), `${relativeVersionRoot}/README.md`)
         await ensureRegularFile(path.join(versionDir, 'LICENSE'), `${relativeVersionRoot}/LICENSE`)
         await ensureRegularFile(path.join(versionDir, 'AGENTRIG_SOURCE.json'), `${relativeVersionRoot}/AGENTRIG_SOURCE.json`)
         await ensureRegularFile(path.join(versionDir, 'AGENTRIG_LOCK.json'), `${relativeVersionRoot}/AGENTRIG_LOCK.json`)
         await ensureRegularFile(path.join(versionDir, 'AGENTRIG_REVIEW.json'), `${relativeVersionRoot}/AGENTRIG_REVIEW.json`)
 
-        const pluginManifest = await readJson(path.join(versionDir, '.plugin', 'plugin.json'))
-        validatePluginManifest(pluginManifest, pluginId, version, `${relativeVersionRoot}/.plugin/plugin.json`)
+        const pluginManifest = await readJson(path.join(versionDir, manifestRelativePath))
+        validatePluginManifest(pluginManifest, pluginId, version, `${relativeVersionRoot}/${manifestRelativePath}`, {
+          historical: historicalOpenPlugin,
+        })
 
         const { fileDigests, snapshotDigest } = await computeVersionDigests(versionDir)
 
@@ -945,7 +985,7 @@ async function collectPluginMetadata(pluginRoot, advisoriesByPlugin, mode, enfor
         versionRecords.push(sortKeys({
           version,
           path: `${relativeVersionRoot}/`,
-          manifest: `${relativeVersionRoot}/.plugin/plugin.json`,
+          manifest: `${relativeVersionRoot}/${manifestRelativePath}`,
           source: `${relativeVersionRoot}/AGENTRIG_SOURCE.json`,
           lock: `${relativeVersionRoot}/AGENTRIG_LOCK.json`,
           review: `${relativeVersionRoot}/AGENTRIG_REVIEW.json`,
@@ -969,7 +1009,12 @@ async function collectPluginMetadata(pluginRoot, advisoriesByPlugin, mode, enfor
         }
       }
 
-      const latestManifest = await readJson(path.join(versionsDir, versionRecords[0].version, '.plugin', 'plugin.json'))
+      const latestVersion = versionRecords[0].version
+      const latestManifest = await readJson(path.join(
+        versionsDir,
+        latestVersion,
+        pluginManifestRelativePath(pluginId, latestVersion),
+      ))
       const pluginMeta = {
         kind: 'plugin',
         root: 'plugins',
@@ -1225,4 +1270,9 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
   })
 }
 
-export { assertProductionArtifactAllowed, isProductionTestArtifactId }
+export {
+  assertProductionArtifactAllowed,
+  isProductionTestArtifactId,
+  pluginManifestRelativePath,
+  validatePluginManifest,
+}
