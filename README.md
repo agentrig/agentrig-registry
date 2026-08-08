@@ -30,10 +30,12 @@ Related PlanDB parents: `t-ar-mkt-sdk`, `t-ar-mkt-convex`,
 - `hooks/<namespace>/<hook>/hook.json` - history for one standalone hook
 - `<kind-root>/<namespace>/<artifact>/versions/<version>/` - one signed version snapshot
 
-Each version directory contains:
+New plugin version directories contain:
 
-- `.plugin/plugin.json`
-- or `.skill/skill.json`, `.mcp/mcp.json`, `.hook/hook.json` for standalone artifacts
+- root `plugin.json` using [Agent Plugins v1](https://agent-plugins.org/specification)
+- portable `skills/*/SKILL.md` and root `mcp.json` when present
+- `ai.agentrig/` for AgentRig-specific package files when present
+- `.skill/skill.json`, `.mcp/mcp.json`, or `.hook/hook.json` for standalone artifacts
 - `AGENTRIG_SOURCE.json`
 - `AGENTRIG_LOCK.json`
 - `AGENTRIG_REVIEW.json`
@@ -41,6 +43,10 @@ Each version directory contains:
 - `LICENSE`
 
 Artifact ids use `namespace.artifact`.
+
+The two already-published 0.1.0 plugin snapshots retain their immutable historical
+`.plugin/plugin.json` bytes. The validator allowlists only those exact versions;
+all new plugin versions must use Agent Plugins v1.
 
 Mirrored refs use `<registryAlias>/<namespace.artifact>@<version>`, with
 `registry.json.items[].kind` selecting the artifact kind. Plugin rows keep the

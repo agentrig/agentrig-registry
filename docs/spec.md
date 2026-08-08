@@ -42,7 +42,10 @@ Each version directory contains the mirrored payload files plus provenance,
 lock, and review documents serialized from the SDK `InstallBundle`:
 
 ```text
-.plugin/plugin.json
+plugin.json
+skills/<skill>/SKILL.md
+mcp.json
+ai.agentrig/
 .skill/skill.json
 .mcp/mcp.json
 .hook/hook.json
@@ -52,6 +55,14 @@ AGENTRIG_REVIEW.json
 README.md
 LICENSE
 ```
+
+Root `plugin.json`, `skills/*/SKILL.md`, and `mcp.json` follow Agent Plugins
+1.0.0. AgentRig extension metadata uses `extensions["ai.agentrig"]`, and
+AgentRig-specific package files live under `ai.agentrig/`.
+
+Exact immutable versions published before this cut may retain
+`.plugin/plugin.json`; the validator uses an explicit version allowlist for
+that historical boundary and never accepts it for a new version.
 
 Standalone source artifacts use `artifact_kind` and `artifact_path`. Plugin
 source artifacts use `plugin_path`. Lock files include SDK-owned

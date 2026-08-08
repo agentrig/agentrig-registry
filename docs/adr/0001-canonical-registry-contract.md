@@ -160,11 +160,15 @@ Per artifact:
 
 Per version:
 
-- `.plugin/plugin.json`
+- `plugin.json` for Agent Plugins v1 plugin snapshots
 - or `.skill/skill.json`, `.mcp/mcp.json`, `.hook/hook.json`
 - `AGENTRIG_SOURCE.json`
 - `AGENTRIG_LOCK.json`
 - `AGENTRIG_REVIEW.json`
+
+Immutable plugin versions published before the Agent Plugins v1 adoption may
+retain `.plugin/plugin.json` only when explicitly allowlisted by exact artifact
+id and version. New versions cannot use the historical layout.
 
 Minimum required contents:
 
