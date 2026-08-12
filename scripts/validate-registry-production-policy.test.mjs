@@ -33,7 +33,7 @@ const agentPluginManifest = {
   $schema: 'https://agent-plugins.org/schemas/1.0.0/plugin.schema.json',
   name: 'community.typescript',
   version: '1.0.0',
-  extensions: { 'ai.agentrig': { kind: 'plugin' } },
+  extensions: { 'ai.agentrig': { displayName: 'TypeScript Tools' } },
 }
 assert.doesNotThrow(() => validatePluginManifest(
   agentPluginManifest,
