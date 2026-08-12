@@ -112,7 +112,7 @@
     },
     "canonicalManifestPath": {
       "type": "string",
-      "pattern": "^(plugins/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/versions/.+/.plugin/plugin\\.json|skills/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/versions/.+/.skill/skill\\.json|mcps/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/versions/.+/.mcp/mcp\\.json|hooks/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/versions/.+/.hook/hook\\.json)$"
+      "pattern": "^(plugins/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/versions/(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?/plugin\\.json|plugins/(agentrig/core|regenrek/agentic-engineer-core)/versions/0\\.1\\.0/\\.plugin/plugin\\.json|skills/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/versions/.+/\\.skill/skill\\.json|mcps/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/versions/.+/\\.mcp/mcp\\.json|hooks/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/versions/.+/\\.hook/hook\\.json)$"
     },
     "canonicalSourcePath": {
       "type": "string",

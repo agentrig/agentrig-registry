@@ -488,9 +488,9 @@ function validateFileDigests(fileDigests, where, options = { requireSize: true }
   }
 }
 
-function validatePluginManifest(manifest, pluginId, version, where, options = {}) {
+function validatePluginManifest(manifest, pluginId, version, where) {
   assertPlainObject(manifest, where)
-  const historical = options.historical === true
+  const historical = HISTORICAL_OPEN_PLUGIN_VERSIONS.has(`${pluginId}@${version}`)
   assertAdditionalProperties(
     manifest,
     historical ? HISTORICAL_OPEN_PLUGIN_MANIFEST_ALLOWED_FIELDS : AGENT_PLUGIN_MANIFEST_ALLOWED_FIELDS,
@@ -959,9 +959,7 @@ async function collectPluginMetadata(pluginRoot, advisoriesByPlugin, mode, enfor
         await ensureRegularFile(path.join(versionDir, 'AGENTRIG_REVIEW.json'), `${relativeVersionRoot}/AGENTRIG_REVIEW.json`)
 
         const pluginManifest = await readJson(path.join(versionDir, manifestRelativePath))
-        validatePluginManifest(pluginManifest, pluginId, version, `${relativeVersionRoot}/${manifestRelativePath}`, {
-          historical: historicalOpenPlugin,
-        })
+        validatePluginManifest(pluginManifest, pluginId, version, `${relativeVersionRoot}/${manifestRelativePath}`)
 
         const { fileDigests, snapshotDigest } = await computeVersionDigests(versionDir)
 

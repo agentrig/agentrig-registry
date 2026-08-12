@@ -27,6 +27,7 @@ assert.doesNotThrow(() => assertProductionArtifactAllowed('regenrek.test-submiss
 
 assert.equal(pluginManifestRelativePath('community.demo', '1.0.0'), 'plugin.json')
 assert.equal(pluginManifestRelativePath('agentrig.core', '0.1.0'), '.plugin/plugin.json')
+assert.equal(pluginManifestRelativePath('regenrek.agentic-engineer-core', '0.1.0'), '.plugin/plugin.json')
 assert.equal(pluginManifestRelativePath('agentrig.core', '0.2.0'), 'plugin.json')
 
 const agentPluginManifest = {
@@ -47,6 +48,27 @@ assert.throws(
     'community.typescript',
     '1.0.0',
     'fixture/plugin.json',
+  ),
+  /expected "https:\/\/agent-plugins\.org\/schemas\/1\.0\.0\/plugin\.schema\.json"/,
+)
+
+const historicalManifest = {
+  $schema: 'https://agentrig.ai/schema/plugin.v1.json',
+  name: 'agentrig.core',
+  version: '0.1.0',
+}
+assert.doesNotThrow(() => validatePluginManifest(
+  historicalManifest,
+  'agentrig.core',
+  '0.1.0',
+  'fixture/.plugin/plugin.json',
+))
+assert.throws(
+  () => validatePluginManifest(
+    { ...historicalManifest, name: 'community.demo', version: '1.0.0' },
+    'community.demo',
+    '1.0.0',
+    'fixture/.plugin/plugin.json',
   ),
   /expected "https:\/\/agent-plugins\.org\/schemas\/1\.0\.0\/plugin\.schema\.json"/,
 )
